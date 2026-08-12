@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "test": "node ../../tools/smoke/web-smoke.mjs",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "next typegen && tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
     "@xiangxu/ui": "workspace:*",

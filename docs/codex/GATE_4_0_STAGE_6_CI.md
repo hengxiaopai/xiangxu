@@ -230,6 +230,11 @@ Redis 8.2.8 PONG/version smoke PASS
 BullMQ fake job 7 -> 14, completed PASS
 ```
 
+After the first hosted-runner portability correction, a second complete local
+`pnpm verify` exited `0` in 109.7 seconds. The cold Web build and Docker smoke
+were rerun; Web typecheck explicitly generated fresh Next route types before
+strict TypeScript, and the same full result set above remained PASS.
+
 The Infrastructure checks used the Stage 5 Compose definition and pinned
 PostgreSQL/Redis images. No skip environment variable or parallel CI-only
 verification path was introduced.
@@ -262,10 +267,11 @@ verification:
 | Valid runner produced a checker false positive | the initial negative-lookahead runner pattern was ambiguous | enumerate every `runs-on` value and require exactly one `ubuntu-24.04` | `pnpm ci:check` PASS |
 | Negative YAML list entries were not detected | patterns did not accept the optional YAML list marker | accept optional `-` before `uses` and `continue-on-error` | raw negative exit `1`; self-test PASS |
 | Linux cleanup could match its own `awk` command | process matching inspected the whole command row for `node` | inspect `comm` and require the process executable field to equal `node` | `pnpm ci:check` and complete `pnpm verify` PASS |
+| Hosted run `31552743256` failed Web typecheck on the initial commit | a clean checkout had no `.next`, while committed `next-env.d.ts` correctly referenced generated `.next/types/routes.d.ts` and `root-params.d.ts`; the prior local build cache masked this ordering defect | change only `@xiangxu/web` typecheck to `next typegen && tsc --project tsconfig.json --noEmit` | local `.next` was moved out of the repository; fresh route/root-parameter types generated; targeted typecheck PASS; complete local `pnpm verify` exit `0` |
 
-No real-CI retest is available before publication. If the hosted run later
-reveals a portability defect, it must be fixed minimally and both local and
-real CI rerun before Stage 6 can pass.
+The initial real-CI failure remains part of the audit history. Its corrective
+commit must receive a new hosted run with conclusion `success`; local success
+does not close Stage 6.
 
 ## 11. CI/Local Parity and Known Risks
 
@@ -312,23 +318,28 @@ handoff post-hash:
 32 / 32 SHA-256 unchanged
 ```
 
-Publication is authorized and the remote is configured, but the following
-fields remain unresolved until the initial commit, push, and hosted run:
+The initial publication and first hosted run produced:
 
 ```text
 GitHub repository: hengxiaopai/xiangxu
 remote: https://github.com/hengxiaopai/xiangxu.git
-workflow name: CI (defined locally; publication pending)
-run ID: unavailable
-commit SHA: unavailable
-runner OS evidence: unavailable
-job conclusion: unavailable
-complete pnpm verify exit status on hosted runner: unavailable
+workflow name: CI
+initial commit SHA: 9b502b7036a954c97fc13b5de0305c36046dc064
+initial push: success; origin/main created without force
+initial run ID: 31552743256
+initial run URL: https://github.com/hengxiaopai/xiangxu/actions/runs/31552743256
+runner label: ubuntu-24.04
+initial conclusion: failure
+initial pnpm verify exit status: 2
+failure step: Unified verification / @xiangxu/web#typecheck
+corrective commit SHA: pending
+corrective run ID: pending
+corrective conclusion: pending
 ```
 
-The next authorized operation is the audited initial commit and normal push.
-After publication, the exact hosted run and exact commit must be inspected and
-recorded; only a successful run can change Stage 6 from BLOCKED to PASS.
+The exact initial commit matched `origin/main` and the failed workflow run. The
+next authorized operation is the audited minimal corrective commit and normal
+push. Only its successful hosted run can change Stage 6 from BLOCKED to PASS.
 
 ## 14. Final Status
 
