@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "browser": {
+    "name": "Google Chrome",
+    "version": "137.0.7151.69",
+    "installationSource": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "signature": "Google LLC; valid Authenticode signature"
+  },
+  "automation": {
+    "capability": "OpenAI bundled Chrome browser automation",
+    "capabilityVersion": "26.803.81509",
+    "inputMethod": "browser-level CUA keypress",
+    "isTrustedObserver": "not installed because the browser inspection scope is read-only; optional under the Recovery instruction"
+  },
+  "sequence": {
+    "initialFocus": {
+      "tag": "BODY",
+      "pathname": "/app/today"
+    },
+    "firstTab": {
+      "tag": "A",
+      "text": "Today shell",
+      "href": "/app/today",
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "rgb(11, 73, 61)"
+    },
+    "beforeEnter": {
+      "url": "http://127.0.0.1:4327/app/today",
+      "pathname": "/app/today",
+      "tag": "A",
+      "text": "Login shell",
+      "href": "/login",
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "rgb(11, 73, 61)"
+    },
+    "afterEnter": {
+      "url": "http://127.0.0.1:4327/login",
+      "pathname": "/login",
+      "heading": "登录",
+      "httpStatus": 200,
+      "forms": 0,
+      "credentialInputs": 0
+    }
+  },
+  "shiftTab": {
+    "before": {
+      "tag": "A",
+      "text": "Login shell",
+      "href": "/login"
+    },
+    "reverse": {
+      "tag": "A",
+      "text": "Today shell",
+      "href": "/app/today"
+    }
+  },
+  "disabledLoginButton": {
+    "disabled": true,
+    "afterTab": {
+      "tag": "BODY",
+      "pathname": "/login"
+    },
+    "afterEnterPathname": "/login",
+    "authenticationRequestCount": 0,
+    "newObservedAssets": [],
+    "observedAssetOrigins": [
+      "http://127.0.0.1:4327"
+    ]
+  },
+  "acceptance41": "PASS"
+}

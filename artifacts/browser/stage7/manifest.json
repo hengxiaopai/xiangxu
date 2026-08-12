@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "browser": {
+    "name": "Codex In-app Browser",
+    "capabilityVersion": "26.803.81509",
+    "provenance": "OpenAI bundled browser plugin",
+    "projectDependency": "none"
+  },
+  "server": {
+    "mode": "Next.js production",
+    "origin": "http://127.0.0.1:4327",
+    "binding": "127.0.0.1"
+  },
+  "routeAssertions": {
+    "rootStatus": 307,
+    "rootLocation": "/login",
+    "rootFollowStatus": 200,
+    "rootFinalPathname": "/login",
+    "loginStatus": 200,
+    "todayStatus": 200
+  },
+  "cases": [
+    {
+      "route": "/login",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "filename": "login-desktop-light.png",
+      "sha256": "fac9704efe424ae765ca334dd3b08722572c8c180403ccc52558e9d6fde6ef8c",
+      "httpStatus": 200,
+      "navigationPathname": "/login",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    },
+    {
+      "route": "/login",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "filename": "login-desktop-dark.png",
+      "sha256": "0a286477765b4ff30bf0cc6c50ee75471d54f508b207a3078d967c16512046e1",
+      "httpStatus": 200,
+      "navigationPathname": "/login",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    },
+    {
+      "route": "/login",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "filename": "login-mobile-light.png",
+      "sha256": "547bfc29d397358e719b0ee01d3bc249fc6c95e43a47890615d0dc85e4440ccc",
+      "httpStatus": 200,
+      "navigationPathname": "/login",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    },
+    {
+      "route": "/login",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "filename": "login-mobile-dark.png",
+      "sha256": "413a87d0d150a352c674a973914f12d1b10fa08ec39596aa7c63fc2e7b50f51e",
+      "httpStatus": 200,
+      "navigationPathname": "/login",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    },
+    {
+      "route": "/app/today",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "filename": "today-desktop-light.png",
+      "sha256": "fa455298f6d4fad7215ead4e5ada686591864771fb3b31aa4e9a444c2a367a65",
+      "httpStatus": 200,
+      "navigationPathname": "/app/today",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    },
+    {
+      "route": "/app/today",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "filename": "today-desktop-dark.png",
+      "sha256": "7d5daf6639a01bf7abefa5cb2da09ee9cd060c0694916dbb2d902e1bebd2e658",
+      "httpStatus": 200,
+      "navigationPathname": "/app/today",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    },
+    {
+      "route": "/app/today",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "filename": "today-mobile-light.png",
+      "sha256": "31781ee8cfd3a717bc6ba00682ec7b4bbb1b08c5e16d5b46af353f458f6efbaf",
+      "httpStatus": 200,
+      "navigationPathname": "/app/today",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    },
+    {
+      "route": "/app/today",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "filename": "today-mobile-dark.png",
+      "sha256": "10f57c1bf77f3c655b853982c57eae524446828687d59cb8f7b899f6fc9fb322",
+      "httpStatus": 200,
+      "navigationPathname": "/app/today",
+      "navigationResult": "PASS",
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "externalRequestCount": 0,
+      "horizontalOverflow": false,
+      "clippedElementCount": 0
+    }
+  ]
+}

@@ -3,12 +3,14 @@
 ## Current Gate
 
 - Current gate: **Gate 4.0 — engineering bootstrap only**.
-- Current completed stage: **Stage 6 — Unified Verification & CI**.
+- Current completed stage: **Stage 7 — Browser & Visual Evidence**.
 - Stage 5 passed PostgreSQL 18.4 clean rebuild, deterministic Drizzle migration, Redis 8.2.8 health, BullMQ pure-JavaScript fake-job smoke, boundary enforcement, and unified verification on 2026-08-12.
 - Stage 5 lifecycle policy allows three exact esbuild versions and explicitly denies exact `msgpackr-extract@3.0.4`; every other lifecycle/build script remains denied.
 - Stage 6 passed publication safety, SHA-pinned GitHub Actions policy, fresh frozen installation, unified verification, infrastructure cleanup, and a real `ubuntu-24.04` hosted run for exact commit `964a965dfd6b6161c3a55f30fc557b255a68fea1` on 2026-08-12.
-- Stage 7 has not started.
-- Do not start Stage 7 without a Stage 6 PASS and explicit human approval.
+- Stage 7 passed the eight-state Light/Dark desktop/mobile screenshot matrix, responsive geometry and semantic checks, real Chrome Tab/Shift+Tab/Enter activation, deterministic artifact hashing, frozen installation, and unified verification on 2026-08-12.
+- Stage 8 Phase A local final audit passed on 2026-08-12, and final publication was explicitly authorized on 2026-08-12.
+- Current Stage 8 status remains **BLOCKED — final publication and exact-commit hosted CI closure pending** until `origin/main` and the successful Actions `head_sha` both equal the final Gate commit.
+- Only the reviewed Stage 7/8 evidence set may be committed and normally pushed to `origin/main`; force push, tags, releases, product work, and Gate 4.1 remain unauthorized.
 - Never start Gate 4.1 without an explicit human PASS.
 - Work only inside the Stage named by the active task.
 
@@ -84,6 +86,8 @@ Do not create later-Stage implementation to make the current Stage look complete
 - `pnpm contracts:generate` / `pnpm contracts:check`: generate and verify the deterministic OpenAPI artifact.
 - `pnpm contracts:drift:test`: prove a temporary contract mutation is rejected.
 - `pnpm tokens:check`: enforce the centralized token boundary in UI consumers.
+- `pnpm browser:check`: validate the recorded real-keyboard Tab/Shift+Tab/Enter activation evidence.
+- `pnpm browser:evidence`: validate the eight-state screenshot manifest, PNG hashes, and keyboard evidence.
 - `pnpm db:generate` / `pnpm db:migrate` / `pnpm db:smoke`: Stage 5 versioned-migration commands.
 - `pnpm db:rebuild:smoke`: guarded two-cycle clean PostgreSQL rebuild proof.
 - `pnpm queue:smoke` / `pnpm infra:smoke`: Stage 5 Redis/BullMQ and combined infrastructure smoke.

@@ -24,6 +24,8 @@
     "contracts:check": "pnpm --filter @xiangxu/contracts check",
     "contracts:drift:test": "pnpm --filter @xiangxu/contracts drift:test",
     "tokens:check": "node tools/tokens/check-tokens.mjs",
+    "browser:check": "node tools/browser/check-keyboard-evidence.mjs",
+    "browser:evidence": "node tools/browser/check-evidence.mjs",
     "ci:check": "node tools/ci/test-workflow.mjs",
     "db:generate": "pnpm --filter @xiangxu/infrastructure db:generate",
     "db:migrate": "pnpm --filter @xiangxu/infrastructure db:migrate",
