@@ -1,0 +1,21 @@
+node_modules/
+.turbo/
+.next/
+dist/
+coverage/
+*.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+
+*.log
+pnpm-debug.log*
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local read-only upstream SSOT; not approved for public publication.
+XIANGXU_Gate_3.9R_Codex_Chinese_Handoff_V1.0/

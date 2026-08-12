@@ -1,0 +1,33 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+registries:
+  default: https://registry.npmjs.org/
+
+minimumReleaseAge: 1440
+# Stage 0 locked this exact release. Stage 1 dry-run proved it was less than
+# 24 hours old, so only this reviewed version family bypasses the age gate.
+minimumReleaseAgeExclude:
+  - "typescript-eslint@8.67.0"
+  - "@typescript-eslint/eslint-plugin@8.67.0"
+  - "@typescript-eslint/parser@8.67.0"
+  - "@typescript-eslint/project-service@8.67.0"
+  - "@typescript-eslint/scope-manager@8.67.0"
+  - "@typescript-eslint/tsconfig-utils@8.67.0"
+  - "@typescript-eslint/type-utils@8.67.0"
+  - "@typescript-eslint/types@8.67.0"
+  - "@typescript-eslint/typescript-estree@8.67.0"
+  - "@typescript-eslint/utils@8.67.0"
+  - "@typescript-eslint/visitor-keys@8.67.0"
+blockExoticSubdeps: true
+strictDepBuilds: true
+engineStrict: true
+
+# Stage 5 lifecycle approval is exact-version-only. New versions or packages
+# require a separate dependency/build review before execution.
+allowBuilds:
+  'esbuild@0.18.20': true
+  'esbuild@0.25.12': true
+  'esbuild@0.28.2': true
+  'msgpackr-extract@3.0.4': false

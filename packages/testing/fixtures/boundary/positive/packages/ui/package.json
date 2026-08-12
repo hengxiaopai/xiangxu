@@ -1,0 +1,8 @@
+{
+  "name": "@xiangxu/ui",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@xiangxu/contracts": "workspace:*"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@xiangxu/application",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@xiangxu/domain": "workspace:*"
+  },
+  "devDependencies": {
+    "bullmq": "6.0.10",
+    "drizzle-orm": "0.45.2",
+    "react": "19.2.8"
+  }
+}

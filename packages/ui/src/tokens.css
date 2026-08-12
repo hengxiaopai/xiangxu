@@ -1,0 +1,122 @@
+/* Primitive tokens: the only approved raw design values. */
+:root {
+  --xx-primitive-paper-50: #fafaf7;
+  --xx-primitive-paper-0: #ffffff;
+  --xx-primitive-paper-100: #f4f5f1;
+  --xx-primitive-graphite-900: #18201e;
+  --xx-primitive-graphite-600: #4d5855;
+  --xx-primitive-graphite-400: #74807c;
+  --xx-primitive-border-200: #dce3df;
+  --xx-primitive-border-300: #cbd5d0;
+  --xx-primitive-green-800: #0b493d;
+  --xx-primitive-green-700: #0e5a49;
+  --xx-primitive-green-100: #e8f1ed;
+  --xx-primitive-ice-100: #eaf8f7;
+  --xx-primitive-ice-200: #cbede9;
+  --xx-primitive-ice-700: #125e57;
+  --xx-primitive-sand-500: #d5a673;
+  --xx-primitive-success-600: #2f775f;
+  --xx-primitive-warning-600: #b7793e;
+  --xx-primitive-danger-600: #b94a48;
+  --xx-primitive-info-600: #527d8f;
+
+  --xx-primitive-dark-canvas: #101615;
+  --xx-primitive-dark-surface: #161d1b;
+  --xx-primitive-dark-text-primary: #eef3f0;
+  --xx-primitive-dark-text-secondary: #aab5b0;
+  --xx-primitive-dark-border: rgba(255, 255, 255, 0.08);
+  --xx-primitive-dark-ai-surface: #152624;
+
+  --xx-space-1: 4px;
+  --xx-space-2: 8px;
+  --xx-space-3: 12px;
+  --xx-space-4: 16px;
+  --xx-space-5: 20px;
+  --xx-space-6: 24px;
+  --xx-space-8: 32px;
+  --xx-space-10: 40px;
+  --xx-space-12: 48px;
+  --xx-space-16: 64px;
+
+  --xx-radius-control: 8px;
+  --xx-radius-card: 12px;
+  --xx-radius-surface: 16px;
+  --xx-radius-pill: 999px;
+  --xx-border-width-default: 1px;
+  --xx-focus-width: 2px;
+
+  --xx-control-height-sm: 32px;
+  --xx-control-height-md: 36px;
+  --xx-control-height-lg: 40px;
+  --xx-layout-canvas-max: 1180px;
+  --xx-layout-copy-max: 780px;
+  --xx-shell-sidebar-width: 232px;
+  --xx-shell-topbar-height: 56px;
+  --xx-shell-rail-width: 320px;
+
+  --xx-font-family-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, -apple-system, sans-serif;
+  --xx-font-size-page-title: 28px;
+  --xx-line-height-page-title: 36px;
+  --xx-font-weight-page-title: 650;
+  --xx-font-size-section-title: 20px;
+  --xx-line-height-section-title: 26px;
+  --xx-font-weight-section-title: 600;
+  --xx-font-size-panel-title: 15px;
+  --xx-line-height-panel-title: 22px;
+  --xx-font-weight-panel-title: 600;
+  --xx-font-size-body: 14px;
+  --xx-line-height-body: 22px;
+  --xx-font-weight-body: 400;
+  --xx-font-size-ui-label: 13px;
+  --xx-line-height-ui-label: 20px;
+  --xx-font-weight-ui-label: 500;
+  --xx-opacity-disabled: 0.56;
+}
+
+/* Semantic tokens: Light is the default theme. */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --xx-color-bg-canvas: var(--xx-primitive-paper-50);
+  --xx-color-bg-surface: var(--xx-primitive-paper-0);
+  --xx-color-bg-subtle: var(--xx-primitive-paper-100);
+  --xx-color-text-primary: var(--xx-primitive-graphite-900);
+  --xx-color-text-secondary: var(--xx-primitive-graphite-600);
+  --xx-color-text-tertiary: var(--xx-primitive-graphite-400);
+  --xx-color-border: var(--xx-primitive-border-200);
+  --xx-color-border-strong: var(--xx-primitive-border-300);
+  --xx-color-brand-primary: var(--xx-primitive-green-800);
+  --xx-color-brand-hover: var(--xx-primitive-green-700);
+  --xx-color-brand-soft: var(--xx-primitive-green-100);
+  --xx-color-ai-surface: var(--xx-primitive-ice-100);
+  --xx-color-ai-border: var(--xx-primitive-ice-200);
+  --xx-color-ai-text: var(--xx-primitive-ice-700);
+  --xx-color-focus: var(--xx-color-brand-primary);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --xx-color-bg-canvas: var(--xx-primitive-dark-canvas);
+  --xx-color-bg-surface: var(--xx-primitive-dark-surface);
+  --xx-color-bg-subtle: var(--xx-primitive-dark-surface);
+  --xx-color-text-primary: var(--xx-primitive-dark-text-primary);
+  --xx-color-text-secondary: var(--xx-primitive-dark-text-secondary);
+  --xx-color-text-tertiary: var(--xx-primitive-dark-text-secondary);
+  --xx-color-border: var(--xx-primitive-dark-border);
+  --xx-color-border-strong: var(--xx-primitive-dark-text-secondary);
+  --xx-color-ai-surface: var(--xx-primitive-dark-ai-surface);
+  --xx-color-focus: var(--xx-color-ai-border);
+}
+
+/* Component tokens: components consume these semantic mappings only. */
+:root {
+  --xx-button-radius: var(--xx-radius-control);
+  --xx-button-border-width: var(--xx-border-width-default);
+  --xx-button-padding-inline-sm: var(--xx-space-3);
+  --xx-button-padding-inline-md: var(--xx-space-4);
+  --xx-button-padding-inline-lg: var(--xx-space-5);
+  --xx-surface-radius-default: var(--xx-radius-card);
+  --xx-surface-radius-major: var(--xx-radius-surface);
+  --xx-surface-padding-default: var(--xx-space-6);
+  --xx-surface-padding-major: var(--xx-space-8);
+}

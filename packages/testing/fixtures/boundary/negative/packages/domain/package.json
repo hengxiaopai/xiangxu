@@ -1,0 +1,17 @@
+{
+  "name": "@xiangxu/domain",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@xiangxu/application": "workspace:*",
+    "@xiangxu/contracts": "workspace:*",
+    "@xiangxu/testing": "workspace:*"
+  },
+  "devDependencies": {
+    "bullmq": "6.0.10",
+    "drizzle-orm": "0.45.2",
+    "ioredis": "5.11.1",
+    "pg": "8.23.0",
+    "zod": "4.4.3"
+  }
+}

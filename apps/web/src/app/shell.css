@@ -1,0 +1,69 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--xx-font-family-sans);
+}
+
+body {
+  margin: 0;
+  background: var(--xx-color-bg-canvas);
+  color: var(--xx-color-text-primary);
+  font-size: var(--xx-font-size-body);
+  line-height: var(--xx-line-height-body);
+  font-weight: var(--xx-font-weight-body);
+}
+
+.shell {
+  width: min(calc(100% - var(--xx-space-8)), var(--xx-layout-canvas-max));
+  margin-inline: auto;
+  padding-block: var(--xx-space-12);
+}
+
+.shell__stack {
+  display: grid;
+  gap: var(--xx-space-4);
+}
+
+.shell__brand {
+  color: var(--xx-color-brand-primary);
+  font-size: var(--xx-font-size-panel-title);
+  line-height: var(--xx-line-height-panel-title);
+  font-weight: var(--xx-font-weight-panel-title);
+}
+
+.shell h1 {
+  margin-block: 0;
+  font-size: var(--xx-font-size-page-title);
+  line-height: var(--xx-line-height-page-title);
+  font-weight: var(--xx-font-weight-page-title);
+}
+
+.shell h2 {
+  margin-block: 0 var(--xx-space-2);
+  font-size: var(--xx-font-size-section-title);
+  line-height: var(--xx-line-height-section-title);
+  font-weight: var(--xx-font-weight-section-title);
+}
+
+.shell nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--xx-space-4);
+  margin-block: var(--xx-space-4) var(--xx-space-12);
+}
+
+.shell a {
+  color: var(--xx-color-brand-primary);
+}
+
+.shell a:focus-visible {
+  outline: var(--xx-focus-width) solid var(--xx-color-focus);
+  outline-offset: var(--xx-focus-width);
+}
+
+.shell p {
+  max-width: var(--xx-layout-copy-max);
+  margin-block: 0;
+}

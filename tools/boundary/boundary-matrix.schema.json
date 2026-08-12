@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xiangxu.local/schemas/boundary-matrix.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "stage", "namespace", "packages", "rules"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "stage": { "type": "string" },
+    "namespace": { "type": "string" },
+    "packages": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["path", "kind", "allowedWorkspaceDependencies", "allowedExternalDependencies"],
+        "properties": {
+          "path": { "type": "string" },
+          "kind": { "enum": ["production", "test-only"] },
+          "allowedWorkspaceDependencies": {
+            "type": "object",
+            "additionalProperties": { "enum": ["runtime", "type-only"] }
+          },
+          "allowedExternalDependencies": {
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true
+          },
+          "additionalSourceInputs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" }
+    }
+  },
+  "additionalProperties": false
+}

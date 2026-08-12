@@ -1,0 +1,43 @@
+{
+  "name": "xiangxu",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.21.0",
+  "engines": {
+    "node": "24.19.0",
+    "pnpm": "11.21.0"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "turbo run typecheck",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "turbo": "turbo",
+    "web:build": "turbo run build --filter @xiangxu/web",
+    "web:smoke": "pnpm --filter @xiangxu/web test",
+    "worker:build": "pnpm --filter @xiangxu/worker build",
+    "worker:smoke": "pnpm --filter @xiangxu/worker test",
+    "boundary": "node tools/boundary/check-boundaries.mjs",
+    "boundary:test": "node tools/boundary/test-boundaries.mjs",
+    "contracts:generate": "pnpm --filter @xiangxu/contracts generate",
+    "contracts:check": "pnpm --filter @xiangxu/contracts check",
+    "contracts:drift:test": "pnpm --filter @xiangxu/contracts drift:test",
+    "tokens:check": "node tools/tokens/check-tokens.mjs",
+    "ci:check": "node tools/ci/test-workflow.mjs",
+    "db:generate": "pnpm --filter @xiangxu/infrastructure db:generate",
+    "db:migrate": "pnpm --filter @xiangxu/infrastructure db:migrate",
+    "db:smoke": "pnpm --filter @xiangxu/infrastructure db:smoke",
+    "db:rebuild:smoke": "pnpm --filter @xiangxu/infrastructure db:rebuild:smoke",
+    "queue:smoke": "pnpm --filter @xiangxu/infrastructure queue:smoke",
+    "infra:smoke": "pnpm --filter @xiangxu/infrastructure infra:smoke",
+    "verify": "pnpm ci:check && pnpm lint && pnpm typecheck && pnpm boundary && pnpm boundary:test && pnpm contracts:check && pnpm tokens:check && pnpm test && pnpm build && pnpm infra:smoke"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.8.1",
+    "turbo": "2.10.9",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.67.0"
+  }
+}

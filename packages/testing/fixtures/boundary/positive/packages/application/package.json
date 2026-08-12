@@ -1,0 +1,8 @@
+{
+  "name": "@xiangxu/application",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@xiangxu/domain": "workspace:*"
+  }
+}

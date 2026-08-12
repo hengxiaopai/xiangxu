@@ -1,0 +1,3 @@
+import "@xiangxu/domain";
+
+export {};

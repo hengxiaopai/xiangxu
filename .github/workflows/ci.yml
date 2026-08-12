@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm and Node
+        # pnpm/setup v2
+        uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2
+        with:
+          version: 11.21.0
+          runtime: node@24.19.0
+          install: false
+          cache: false
+
+      - name: Assert fresh runtime and registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          node_version="$(node --version)"
+          pnpm_version="$(pnpm --version)"
+          registry="$(pnpm config get registry)"
+          printf 'Node %s\npnpm %s\nregistry %s\n' "$node_version" "$pnpm_version" "$registry"
+          test "$node_version" = "v24.19.0"
+          test "$pnpm_version" = "11.21.0"
+          test "$registry" = "https://registry.npmjs.org/"
+          test ! -e node_modules
+          lockfile_sha256="$(sha256sum pnpm-lock.yaml | cut -d ' ' -f 1)"
+          echo "LOCKFILE_SHA256_BEFORE=$lockfile_sha256" >> "$GITHUB_ENV"
+          printf 'lockfile before %s\n' "$lockfile_sha256"
+
+      - name: Frozen install
+        run: pnpm install --frozen-lockfile
+
+      - name: Assert lockfile and lifecycle policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          lockfile_sha256_after="$(sha256sum pnpm-lock.yaml | cut -d ' ' -f 1)"
+          test "$lockfile_sha256_after" = "$LOCKFILE_SHA256_BEFORE"
+          lifecycle_report="$(pnpm ignored-builds)"
+          printf '%s\n' "$lifecycle_report"
+          test "$(printf '%s\n' "$lifecycle_report" | grep -Fc '  None')" -eq 1
+          test "$(printf '%s\n' "$lifecycle_report" | grep -Fc 'msgpackr-extract@3.0.4')" -eq 1
+          echo "LOCKFILE_SHA256_AFTER=$lockfile_sha256_after" >> "$GITHUB_ENV"
+
+      - name: Assert Docker runtime
+        run: |
+          set -euo pipefail
+          docker version
+          docker compose version
+
+      - name: Unified verification
+        run: pnpm verify
+
+      - name: Assert cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          containers="$(docker ps -aq --filter 'label=com.docker.compose.project=xiangxu-stage5')"
+          volumes="$(docker volume ls -q --filter 'label=com.docker.compose.project=xiangxu-stage5')"
+          residual_workers="$(ps -eo pid=,comm=,args= | awk '$2 == "node" && /(apps\/worker|packages\/infrastructure\/scripts)/ {print}')"
+          test -z "$containers"
+          test -z "$volumes"
+          test -z "$residual_workers"
+
+      - name: Write job summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo '## XIANGXU Gate 4.0 verification'
+            echo ''
+            echo '- Node: `v24.19.0`'
+            echo '- pnpm: `11.21.0`'
+            echo "- Lockfile: \`$LOCKFILE_SHA256_AFTER\`"
+            echo '- `pnpm verify`: PASS'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,9 @@
+{
+  "name": "@xiangxu/web",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "bullmq": "6.0.10",
+    "pg": "8.23.0"
+  }
+}

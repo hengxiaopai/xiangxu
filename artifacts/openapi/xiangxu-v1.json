@@ -1,0 +1,88 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "title": "XIANGXU Contract Foundation",
+    "version": "1.0.0",
+    "description": "Generated. Do not hand-edit."
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "paths": {},
+  "components": {
+    "schemas": {
+      "ContractMetadata": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "contract": {
+            "type": "string",
+            "const": "xiangxu"
+          },
+          "contractVersion": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "openapiVersion": {
+            "type": "string",
+            "const": "3.1.2"
+          }
+        },
+        "required": [
+          "contract",
+          "contractVersion",
+          "openapiVersion"
+        ],
+        "additionalProperties": false
+      },
+      "SystemContractMetadataEvent": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "event": {
+            "type": "string",
+            "const": "system.contract-metadata"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9._:-]+$"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "contract": {
+                "type": "string",
+                "const": "xiangxu"
+              },
+              "contractVersion": {
+                "type": "string",
+                "const": "1.0.0"
+              },
+              "openapiVersion": {
+                "type": "string",
+                "const": "3.1.2"
+              }
+            },
+            "required": [
+              "contract",
+              "contractVersion",
+              "openapiVersion"
+            ],
+            "additionalProperties": false
+          },
+          "version": {
+            "type": "string",
+            "const": "1"
+          }
+        },
+        "required": [
+          "event",
+          "id",
+          "data",
+          "version"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "x-xiangxu-generated": "Generated. Do not hand-edit."
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@xiangxu/infrastructure",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "node scripts/db-migrate.mjs",
+    "db:rebuild:smoke": "node scripts/db-rebuild-smoke.mjs --confirm-xiangxu-stage5",
+    "db:smoke": "node scripts/db-smoke.mjs",
+    "infra:smoke": "node scripts/infra-smoke.mjs --confirm-xiangxu-stage5",
+    "queue:smoke": "node scripts/queue-smoke.mjs",
+    "test": "node scripts/config-smoke.mjs",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "bullmq": "6.0.10",
+    "drizzle-orm": "0.45.2",
+    "ioredis": "5.11.1",
+    "pg": "8.23.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "0.31.10"
+  }
+}

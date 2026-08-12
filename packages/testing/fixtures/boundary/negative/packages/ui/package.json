@@ -1,0 +1,12 @@
+{
+  "name": "@xiangxu/ui",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@xiangxu/contracts": "workspace:*",
+    "@xiangxu/infrastructure": "workspace:*",
+    "bullmq": "6.0.10",
+    "ioredis": "5.11.1",
+    "pg": "8.23.0"
+  }
+}

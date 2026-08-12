@@ -1,0 +1,135 @@
+{
+  "$schema": "./boundary-matrix.schema.json",
+  "schemaVersion": 1,
+  "stage": "Gate 4.0 / Stage 5",
+  "namespace": "@xiangxu/",
+  "packages": {
+    "@xiangxu/domain": {
+      "path": "packages/domain",
+      "kind": "production",
+      "allowedWorkspaceDependencies": {
+        "@xiangxu/contracts": "type-only"
+      },
+      "allowedExternalDependencies": []
+    },
+    "@xiangxu/application": {
+      "path": "packages/application",
+      "kind": "production",
+      "allowedWorkspaceDependencies": {
+        "@xiangxu/domain": "runtime",
+        "@xiangxu/contracts": "runtime"
+      },
+      "allowedExternalDependencies": []
+    },
+    "@xiangxu/infrastructure": {
+      "path": "packages/infrastructure",
+      "kind": "production",
+      "allowedWorkspaceDependencies": {
+        "@xiangxu/application": "runtime",
+        "@xiangxu/contracts": "runtime"
+      },
+      "allowedExternalDependencies": [
+        "bullmq",
+        "drizzle-kit",
+        "drizzle-orm",
+        "drizzle-orm/*",
+        "ioredis",
+        "node:*",
+        "pg"
+      ],
+      "additionalSourceInputs": [
+        "drizzle.config.ts",
+        "database/schema.ts",
+        "scripts/config.mjs",
+        "scripts/config-smoke.mjs",
+        "scripts/runtime.mjs",
+        "scripts/database.mjs",
+        "scripts/db-migrate.mjs",
+        "scripts/db-smoke.mjs",
+        "scripts/queue.mjs",
+        "scripts/queue-smoke.mjs",
+        "scripts/infra-smoke.mjs",
+        "scripts/db-rebuild-smoke.mjs"
+      ]
+    },
+    "@xiangxu/contracts": {
+      "path": "packages/contracts",
+      "kind": "production",
+      "allowedWorkspaceDependencies": {},
+      "allowedExternalDependencies": [
+        "zod"
+      ]
+    },
+    "@xiangxu/ui": {
+      "path": "packages/ui",
+      "kind": "production",
+      "allowedWorkspaceDependencies": {
+        "@xiangxu/contracts": "type-only"
+      },
+      "allowedExternalDependencies": [
+        "react",
+        "react/*",
+        "@types/react"
+      ]
+    },
+    "@xiangxu/testing": {
+      "path": "packages/testing",
+      "kind": "test-only",
+      "allowedWorkspaceDependencies": {
+        "@xiangxu/domain": "runtime",
+        "@xiangxu/application": "runtime",
+        "@xiangxu/infrastructure": "runtime",
+        "@xiangxu/contracts": "runtime",
+        "@xiangxu/ui": "runtime",
+        "@xiangxu/web": "runtime",
+        "@xiangxu/worker": "runtime"
+      },
+      "allowedExternalDependencies": []
+    },
+    "@xiangxu/web": {
+      "path": "apps/web",
+      "kind": "production",
+      "allowedWorkspaceDependencies": {
+        "@xiangxu/application": "runtime",
+        "@xiangxu/contracts": "runtime",
+        "@xiangxu/ui": "runtime"
+      },
+      "allowedExternalDependencies": [
+        "next",
+        "next/*",
+        "react",
+        "react/*",
+        "react-dom",
+        "react-dom/*",
+        "@types/node",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "additionalSourceInputs": [
+        "next.config.mjs",
+        "next-env.d.ts"
+      ]
+    },
+    "@xiangxu/worker": {
+      "path": "apps/worker",
+      "kind": "production",
+      "allowedWorkspaceDependencies": {
+        "@xiangxu/application": "runtime",
+        "@xiangxu/infrastructure": "runtime",
+        "@xiangxu/contracts": "runtime"
+      },
+      "allowedExternalDependencies": [
+        "node:*",
+        "@types/node"
+      ]
+    }
+  },
+  "rules": {
+    "forbidProductionDependingOnTesting": true,
+    "forbidCrossPackageRelativeImports": true,
+    "forbidDeepImports": true,
+    "requireDeclaredWorkspaceImports": true,
+    "requireWorkspaceProtocol": true,
+    "forbidWorkspaceCycles": true
+  }
+}
