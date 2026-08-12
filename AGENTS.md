@@ -3,11 +3,11 @@
 ## Current Gate
 
 - Current gate: **Gate 4.0 — engineering bootstrap only**.
-- Current completed stage: **Stage 5 — Data and Queue foundation**.
+- Current completed stage: **Stage 6 — Unified Verification & CI**.
 - Stage 5 passed PostgreSQL 18.4 clean rebuild, deterministic Drizzle migration, Redis 8.2.8 health, BullMQ pure-JavaScript fake-job smoke, boundary enforcement, and unified verification on 2026-08-12.
 - Stage 5 lifecycle policy allows three exact esbuild versions and explicitly denies exact `msgpackr-extract@3.0.4`; every other lifecycle/build script remains denied.
-- Current active stage: **Stage 6 — Unified Verification & CI**. Its workflow, policy checker, negative fixture, frozen install, and local unified verification pass; publication and a real GitHub hosted-runner result remain pending.
-- Stage 5 remains the last completed Stage until Stage 6 has a successful real GitHub Actions run tied to the exact published commit.
+- Stage 6 passed publication safety, SHA-pinned GitHub Actions policy, fresh frozen installation, unified verification, infrastructure cleanup, and a real `ubuntu-24.04` hosted run for exact commit `964a965dfd6b6161c3a55f30fc557b255a68fea1` on 2026-08-12.
+- Stage 7 has not started.
 - Do not start Stage 7 without a Stage 6 PASS and explicit human approval.
 - Never start Gate 4.1 without an explicit human PASS.
 - Work only inside the Stage named by the active task.

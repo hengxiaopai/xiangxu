@@ -3,29 +3,25 @@
 > Stage: Gate 4.0 / Stage 6 — Unified Verification & CI  
 > Audited at: 2026-08-12  
 > Repository root: `G:\codex\xiangxu`  
-> Status: **BLOCKED — awaiting CI publication/run authorization**  
+> Status: **STAGE 6 PASS**  
 > Stage 7: not started  
 > Gate 4.1: not started
 
 ## 1. Result and Scope
 
-The Stage 6 local engineering work is complete: the repository has one minimal
-GitHub Actions Gate workflow, a fail-closed static policy checker, an isolated
-negative fixture, and a single local/CI verification entry point. A frozen
-install and the complete local `pnpm verify` chain pass.
-
-The repository has no commit (`HEAD` is unborn), no Git remote, and no
-commit/push authorization. Consequently, no exact commit has been published
-and no real GitHub hosted runner has executed the workflow. Local success is
-not substituted for that acceptance evidence.
+Stage 6 is complete. The public repository has one minimal GitHub Actions Gate
+workflow, a fail-closed static policy checker, an isolated negative fixture,
+and a single local/CI verification entry point. Exact corrective commit
+`964a965dfd6b6161c3a55f30fc557b255a68fea1` passed a fresh GitHub-hosted
+`ubuntu-24.04` run from checkout through frozen install, complete
+`pnpm verify`, and cleanup.
 
 No browser or visual evidence, accessibility pass, product feature, business
 database model, production queue workflow, authentication, AI, provider, or
 connector work was started.
 
 ```text
-Stage 6 BLOCKED — awaiting CI publication/run authorization.
-Stage 7 not started.
+Stage 6 PASS — Stage 7 not started.
 Gate 4.1 not started.
 ```
 
@@ -269,9 +265,9 @@ verification:
 | Linux cleanup could match its own `awk` command | process matching inspected the whole command row for `node` | inspect `comm` and require the process executable field to equal `node` | `pnpm ci:check` and complete `pnpm verify` PASS |
 | Hosted run `31552743256` failed Web typecheck on the initial commit | a clean checkout had no `.next`, while committed `next-env.d.ts` correctly referenced generated `.next/types/routes.d.ts` and `root-params.d.ts`; the prior local build cache masked this ordering defect | change only `@xiangxu/web` typecheck to `next typegen && tsc --project tsconfig.json --noEmit` | local `.next` was moved out of the repository; fresh route/root-parameter types generated; targeted typecheck PASS; complete local `pnpm verify` exit `0` |
 
-The initial real-CI failure remains part of the audit history. Its corrective
-commit must receive a new hosted run with conclusion `success`; local success
-does not close Stage 6.
+The initial real-CI failure remains part of the audit history. Corrective run
+`31553121149` passed on the exact minimal-fix commit and closed the defect
+without weakening verification.
 
 ## 11. CI/Local Parity and Known Risks
 
@@ -281,26 +277,25 @@ remains repository-owned. The Windows Worker IPC/SIGTERM smoke path from Stage
 3 was preserved, while Linux is expected to use its platform-appropriate
 graceful shutdown path.
 
-The remaining risk is evidence, not a known local engineering failure: the
-Linux hosted-runner environment, its exact OS report, cold package/image
-downloads, Docker versions, cleanup result, and complete command exit status
-have not yet been observed. A workflow file and local PASS cannot resolve that
-risk.
+The hosted runner proved the Linux path, cold package and image acquisition,
+Docker 28.0.4, Docker Compose v2.38.2, complete verification, and cleanup. No
+Stage 6 acceptance item remains open. Browser/visual/accessibility evidence is
+still deliberately deferred to Stage 7 and was not started.
 
-## 12. Acceptance Criteria (Publication Checkpoint)
+## 12. Acceptance Criteria (57/57)
 
 | Criteria | Evidence state | Result |
 |---|---|---|
 | 1–5 Governance | exact local runtime; pre-hash; Stage 5 PASS; no Stage 7 | PASS |
 | 6–15 Workflow security | static workflow and checker evidence | PASS |
-| 16–24 CI runtime/install | exact configuration and local equivalent pass; hosted observations absent | BLOCKED — real CI |
+| 16–24 CI runtime/install | hosted Node/pnpm/registry/fresh workspace/cache-off/frozen install/lock/lifecycle evidence | PASS |
 | 25–29 verification entry/policy | local raw/self-tests and unified verify pass; workflow calls exact command | PASS |
-| 30–43 CI verification results | no hosted run exists | BLOCKED — real CI |
+| 30–43 CI verification results | hosted lint, strict types, boundaries, contracts, tokens, Web/Worker, PostgreSQL/Redis/BullMQ, complete `pnpm verify` | PASS |
 | 44–45 no secrets/provider calls | workflow/source audit | PASS |
-| 46–48 cleanup | local zero residue and workflow assertions; hosted observations absent | BLOCKED — real CI |
-| 49 lockfile integrity | local hash unchanged; hosted observation absent | BLOCKED — real CI |
+| 46–48 cleanup | hosted cleanup step success; local containers/volumes/processes zero | PASS |
+| 49 lockfile integrity | same SHA-256 before/after local and hosted frozen install | PASS |
 | 50 handoff post-hash | final audit in Section 13 | PASS |
-| 51–55 real CI traceability | no repository/run/commit/conclusion exists | BLOCKED — publication/run authorization |
+| 51–55 real CI traceability | repository, exact commit, run/job IDs, runner label and success conclusion recorded | PASS |
 | 56–57 non-entry | Stage 7 and Gate 4.1 not started | PASS |
 
 ## 13. Final Integrity and Publication Fields
@@ -332,19 +327,31 @@ runner label: ubuntu-24.04
 initial conclusion: failure
 initial pnpm verify exit status: 2
 failure step: Unified verification / @xiangxu/web#typecheck
-corrective commit SHA: pending
-corrective run ID: pending
-corrective conclusion: pending
+corrective commit SHA: 964a965dfd6b6161c3a55f30fc557b255a68fea1
+corrective push: normal fast-forward; no force
+corrective run ID: 31553121149
+corrective run URL: https://github.com/hengxiaopai/xiangxu/actions/runs/31553121149
+corrective job ID: 93979878186
+runner group: GitHub Actions
+runner label: ubuntu-24.04
+hosted Node: v24.19.0
+hosted pnpm: 11.21.0
+hosted registry: https://registry.npmjs.org/
+hosted Docker: 28.0.4
+hosted Docker Compose: v2.38.2
+lockfile before/after: 46f3adcb852a98c2406fbc3b944e1bfb3c13c880abb14a7913f39eed6d7f5d79
+corrective pnpm verify exit status: 0
+hosted cleanup: success
+corrective conclusion: success
 ```
 
-The exact initial commit matched `origin/main` and the failed workflow run. The
-next authorized operation is the audited minimal corrective commit and normal
-push. Only its successful hosted run can change Stage 6 from BLOCKED to PASS.
+The corrective run's head SHA exactly matches the published corrective commit.
+Every required workflow step concluded `success`, including unified
+verification, cleanup, and the built-in job summary.
 
 ## 14. Final Status
 
 ```text
-Stage 6 BLOCKED — awaiting CI publication/run authorization.
-Stage 7 not started.
+Stage 6 PASS — Stage 7 not started.
 Gate 4.1 not started.
 ```

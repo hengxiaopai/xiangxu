@@ -7,12 +7,12 @@ Personal AI Work OS — engineering repository bootstrap.
 ## Current Status
 
 - Current Gate: Gate 4.0.
-- Completed evidence: Stage 0 environment/dependency review, Stage 1 repository governance, Stage 2 workspace layering/import-boundary enforcement, Stage 3 Web/Worker runtime shells, Stage 4 Contracts/UI foundation, and Stage 5 Data/Queue foundation.
+- Completed evidence: Stage 0 environment/dependency review, Stage 1 repository governance, Stage 2 workspace layering/import-boundary enforcement, Stage 3 Web/Worker runtime shells, Stage 4 Contracts/UI foundation, Stage 5 Data/Queue foundation, and Stage 6 Unified Verification/CI.
 - Stage 3 passed frozen installation, production build, Web HTTP smoke, Worker runtime smoke, and unified verification.
 - Web and Worker contain runtime shells only. No authentication, Task, Calendar, Inbox, Proposal, AI, Connector, business database schema, or real queue workflow exists yet.
 - Stage 4 passed deterministic Contracts generation/drift detection, Light/Dark semantic tokens, minimal UI components, Web integration, and unified verification.
 - Stage 5 passed PostgreSQL 18.4 clean rebuild, deterministic Drizzle migration, Redis 8.2.8 health, BullMQ pure-JavaScript fake-job smoke, boundary enforcement, and unified verification.
-- Stage 6 CI implementation and local unified verification pass. Publication and the required real GitHub hosted-runner result are pending, so Stage 6 is not yet PASS.
+- Stage 6 passed public-repository publication safety, fresh frozen install, the shared `pnpm verify` entry point, and GitHub Actions run `31553121149` on exact commit `964a965dfd6b6161c3a55f30fc557b255a68fea1` using `ubuntu-24.04`.
 - Stage 7 has not started.
 - Gate 4.1 has not started.
 
