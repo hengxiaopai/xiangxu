@@ -1,6 +1,8 @@
 import {
   ApplicationError,
   captureToTransport,
+  knowledgeOverviewToTransport,
+  libraryToTransport,
   parseRuntimeId,
   planSnapshotToTransport,
   proposalToTransport,
@@ -14,6 +16,8 @@ import {
   captureItemDtoSchema,
   formatRevisionEtag,
   idempotencyKeySchema,
+  knowledgeOverviewDtoSchema,
+  libraryDtoSchema,
   planSnapshotDtoSchema,
   problemDetailsSchema,
   proposalDtoSchema,
@@ -57,6 +61,14 @@ export function captureJson(capture: Parameters<typeof captureToTransport>[0]): 
 
 export function proposalJson(proposal: Parameters<typeof proposalToTransport>[0]): NextResponse {
   return NextResponse.json(proposalDtoSchema.parse(proposalToTransport(proposal)));
+}
+
+export function libraryListJson(libraries: readonly Parameters<typeof libraryToTransport>[0][]): NextResponse {
+  return NextResponse.json(libraries.map((library) => libraryDtoSchema.parse(libraryToTransport(library))));
+}
+
+export function knowledgeOverviewJson(overview: Parameters<typeof knowledgeOverviewToTransport>[0]): NextResponse {
+  return NextResponse.json(knowledgeOverviewDtoSchema.parse(knowledgeOverviewToTransport(overview)));
 }
 
 export function mutationJson(result: CommandExecutionResult): NextResponse {

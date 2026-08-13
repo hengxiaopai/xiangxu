@@ -12,6 +12,7 @@ export function exactInvalidationKeys(
     const key = hint === "today" ? queryKeys.today(actorScope)
       : hint === "review" ? queryKeys.review(actorScope)
         : hint === "tasks" ? queryKeys.tasks(actorScope)
+          : hint === "knowledge" ? queryKeys.knowledge(actorScope)
           : hint === "captures" ? queryKeys.captures(actorScope)
             : null;
     if (key !== null) keys.set(JSON.stringify(key), key);

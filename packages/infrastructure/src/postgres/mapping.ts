@@ -101,7 +101,7 @@ export function mapChangeRecordRow(row: ChangeRecordRow): ChangeRecord {
 
 export function mapObjectType(value: string): ObjectRef["objectType"] {
   const allowed: readonly ObjectRef["objectType"][] = [
-    "task", "time_block", "capture_item", "raw_payload", "proposal", "plan_snapshot", "execution_record", "review_snapshot", "change_record",
+    "task", "time_block", "capture_item", "raw_payload", "proposal", "plan_snapshot", "execution_record", "review_snapshot", "library", "change_record",
   ];
   if (!allowed.includes(value as ObjectRef["objectType"])) throw new Error(`Unsupported object type from database: ${value}`);
   return value as ObjectRef["objectType"];
@@ -124,7 +124,7 @@ export interface OutboxRow {
 
 export function mapOutboxRow(row: OutboxRow) {
   const projectionHints = row.payload.projectionHints.map((hint) => {
-    if (!(hint === "today" || hint === "tasks" || hint === "calendar" || hint === "captures" || hint === "proposals" || hint === "review")) {
+    if (!(hint === "today" || hint === "tasks" || hint === "calendar" || hint === "captures" || hint === "proposals" || hint === "knowledge" || hint === "review")) {
       throw new Error(`Unsupported projection hint from database: ${hint}`);
     }
     return hint as ProjectionHint;

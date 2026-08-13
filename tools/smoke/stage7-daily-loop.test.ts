@@ -79,6 +79,14 @@ describe("Stage 7 bounded Daily Loop UI states", () => {
     }, epoch)).toEqual([["today", epoch], ["review", epoch]]);
   });
 
+  it("maps Gate 4.2 Library events only to the actor-scoped Knowledge projection", () => {
+    const epoch = establishClientSession();
+    expect(exactInvalidationKeys({
+      affectedRefs: [{ objectType: "library", id: planId }],
+      projectionHints: ["knowledge"],
+    }, epoch)).toEqual([["knowledge", epoch]]);
+  });
+
   it("retires the prior identity epoch for cache and offline isolation", () => {
     const established = establishClientSession();
     const retired = retireClientSession();

@@ -66,6 +66,7 @@ export type SliceObjectType =
   | "plan_snapshot"
   | "execution_record"
   | "review_snapshot"
+  | "library"
   | "change_record";
 
 export interface ObjectRef {

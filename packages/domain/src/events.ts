@@ -6,6 +6,7 @@ export type ProjectionHint =
   | "calendar"
   | "captures"
   | "proposals"
+  | "knowledge"
   | "review";
 
 export interface DurableEvent {

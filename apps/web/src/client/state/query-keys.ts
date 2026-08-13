@@ -6,6 +6,7 @@ export const queryKeys = {
   tasks: (actorScope: ClientAuthEpoch) => ["tasks", actorScope] as const,
   task: (actorScope: ClientAuthEpoch, taskId: string) => ["task", actorScope, taskId] as const,
   captures: (actorScope: ClientAuthEpoch) => ["captures", actorScope] as const,
+  knowledge: (actorScope: ClientAuthEpoch) => ["knowledge", actorScope] as const,
   capture: (actorScope: ClientAuthEpoch, captureId: string) => ["capture", actorScope, captureId] as const,
   proposal: (actorScope: ClientAuthEpoch, proposalId: string) => ["proposal", actorScope, proposalId] as const,
 } as const;

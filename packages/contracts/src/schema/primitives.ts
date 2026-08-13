@@ -57,13 +57,14 @@ export const objectRefSchema = z
       "plan_snapshot",
       "execution_record",
       "review_snapshot",
+      "library",
       "change_record",
     ]),
     id: uuidV7Schema,
   })
   .strict();
 
-export const projectionHintSchema = z.enum(["today", "tasks", "calendar", "captures", "proposals", "review"]);
+export const projectionHintSchema = z.enum(["today", "tasks", "calendar", "captures", "proposals", "knowledge", "review"]);
 
 export const affectedRefsAndProjectionHintsSchema = z
   .object({

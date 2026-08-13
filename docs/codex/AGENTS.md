@@ -4,4 +4,4 @@
 - Record commands, exit codes, observed results, risks, and explicit non-goals.
 - Do not report PASS without reproducible evidence.
 - If an Acceptance Criterion is unresolved, report BLOCKED; do not use conditional-pass language.
-- Every Stage report states that the next Stage and Gate 4.1 were not started.
+- Every Gate 4.2 Stage report states whether the next Gate 4.2 Stage and Gate 4.3 were started.

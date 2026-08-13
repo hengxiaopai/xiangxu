@@ -23,6 +23,8 @@ export type GetCapture = Query<"capture.get", { readonly captureId: UUIDv7 }>;
 export type GetProposal = Query<"proposal.get", { readonly proposalId: UUIDv7 }>;
 export type GetReview = Query<"review.get", { readonly date: string; readonly timezone: IanaTimeZone }>;
 export type ReplaySseEvents = Query<"sse.replay", { readonly lastEventId?: string; readonly channels?: readonly string[] }>;
+export type GetKnowledgeOverview = Query<"knowledge.overview", Readonly<Record<string, never>>>;
+export type ListLibraries = Query<"knowledge.library.list", Readonly<Record<string, never>>>;
 
 export type StageOneQuery =
   | GetToday
@@ -33,4 +35,6 @@ export type StageOneQuery =
   | GetCapture
   | GetProposal
   | GetReview
+  | GetKnowledgeOverview
+  | ListLibraries
   | ReplaySseEvents;

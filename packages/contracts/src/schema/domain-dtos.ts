@@ -111,6 +111,36 @@ export const mutationResultSchema = affectedRefsAndProjectionHintsSchema.extend(
   revision: revisionDecimalSchema.optional(),
 });
 
+export const libraryDtoSchema = z
+  .object({
+    id: uuidV7Schema,
+    ownerId: uuidV7Schema,
+    name: z.string().trim().min(1),
+    description: z.string(),
+    settings: z.record(z.string(), z.unknown()),
+    createdAt: rfc3339InstantSchema,
+    createdBy: actorRefSchema,
+    archivedAt: rfc3339InstantSchema.optional(),
+  })
+  .strict();
+
+export const knowledgeOverviewMetricsSchema = z
+  .object({
+    added: z.number().int().nonnegative(),
+    unread: z.number().int().nonnegative(),
+    reading: z.number().int().nonnegative(),
+    settled: z.number().int().nonnegative(),
+    longUnread: z.number().int().nonnegative(),
+  })
+  .strict();
+
+export const knowledgeOverviewDtoSchema = z
+  .object({
+    metrics: knowledgeOverviewMetricsSchema,
+    libraries: z.array(libraryDtoSchema),
+  })
+  .strict();
+
 export const changeRecordDtoSchema = z
   .object({
     id: uuidV7Schema,
@@ -132,3 +162,5 @@ export type TaskDto = z.infer<typeof taskDtoSchema>;
 export type TimeBlockDto = z.infer<typeof timeBlockDtoSchema>;
 export type CaptureItemDto = z.infer<typeof captureItemDtoSchema>;
 export type ProposalDto = z.infer<typeof proposalDtoSchema>;
+export type LibraryDto = z.infer<typeof libraryDtoSchema>;
+export type KnowledgeOverviewDto = z.infer<typeof knowledgeOverviewDtoSchema>;

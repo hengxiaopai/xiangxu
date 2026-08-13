@@ -120,6 +120,10 @@ export class PgSseEventStream {
               SELECT 1 FROM planning.review_snapshots AS review
                WHERE review.id = event.target_id AND review.owner_id = $3
             ))
+            OR (event.target_type = 'library' AND EXISTS (
+              SELECT 1 FROM knowledge.libraries AS library
+               WHERE library.id = event.target_id AND library.owner_id = $3
+            ))
           )
         ORDER BY event.sequence
         LIMIT $4`,
@@ -167,6 +171,10 @@ export class PgSseEventStream {
             OR (event.target_type = 'review_snapshot' AND EXISTS (
               SELECT 1 FROM planning.review_snapshots AS review
               WHERE review.id=event.target_id AND review.owner_id=$2
+            ))
+            OR (event.target_type = 'library' AND EXISTS (
+              SELECT 1 FROM knowledge.libraries AS library
+              WHERE library.id=event.target_id AND library.owner_id=$2
             ))
           )`,
       [channels, actorId],

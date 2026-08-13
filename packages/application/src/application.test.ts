@@ -3,8 +3,8 @@
 import { describe, expect, it } from "vitest";
 
 import { Revision, UUIDv7, createPlanSnapshot, createTask, createTimeBlock, parseIanaTimeZone, parseRfc3339Instant, type ActorRef, type ReviewSnapshot } from "@xiangxu/domain";
-import type { CommitDailyPlan, CompleteTask, CreateReviewSnapshot, MoveTimeBlock, TransactionRepositories, UnitOfWork } from "./index.js";
-import { ApplicationError, PlanReviewHandlers, TaskHandlers, TimeBlockHandlers, decideIdempotency, decideRevision } from "./index.js";
+import type { CommitDailyPlan, CompleteTask, CreateLibrary, CreateReviewSnapshot, MoveTimeBlock, TransactionRepositories, UnitOfWork } from "./index.js";
+import { ApplicationError, KnowledgeHandlers, PlanReviewHandlers, TaskHandlers, TimeBlockHandlers, decideIdempotency, decideRevision } from "./index.js";
 
 const actor = {
   actorType: "user" as const,
@@ -77,6 +77,30 @@ describe("Task handler concurrency semantics", () => {
     await expect(new TaskHandlers(unitOfWork(repositories), runtime()).complete(command)).rejects.toMatchObject({
       code: "REVISION_CONFLICT",
     } satisfies Partial<ApplicationError>);
+  });
+});
+
+describe("Knowledge handler transaction semantics", () => {
+  it("creates one Library with audit, Outbox, idempotency and server actor ownership", async () => {
+    const repositories = baseRepositories();
+    let insertedOwner = "";
+    let changes = 0;
+    let events = 0;
+    repositories.knowledge.insertLibrary = async (library) => { insertedOwner = library.ownerId; return library; };
+    repositories.changes.append = async () => { changes += 1; };
+    repositories.outbox.append = async () => { events += 1; return 1n; };
+    const command: CreateLibrary = {
+      commandId: UUIDv7.parse("0198f1a0-4444-7abc-8def-0123456789ab"),
+      commandType: "knowledge.library.create",
+      actor,
+      idempotency: { key: "knowledge-library-001", requestFingerprint: `sha256:${"f".repeat(64)}` },
+      sourceContext: { route: "/api/v1/libraries", surface: "knowledge-overview" },
+      payload: { libraryId: UUIDv7.parse("0198f1a0-4333-7abc-8def-0123456789ab"), name: "研究资料" },
+    };
+    const result = await new KnowledgeHandlers(unitOfWork(repositories), runtime()).createLibrary(command);
+    expect(insertedOwner).toBe(actor.actorId);
+    expect(result).toMatchObject({ status: 201, replayed: false });
+    expect({ changes, events }).toEqual({ changes: 1, events: 1 });
   });
 });
 
@@ -315,6 +339,14 @@ function baseRepositories(): TransactionRepositories {
       getById: async () => null,
       getByIdForUpdate: async () => null,
       markApplied: async () => false,
+    },
+    knowledge: {
+      insertLibrary: async (library) => library,
+      listLibraries: async () => [],
+      getOverview: async () => ({
+        metrics: { added: 0, unread: 0, reading: 0, settled: 0, longUnread: 0 },
+        libraries: [],
+      }),
     },
     changes: {
       append: async () => undefined,

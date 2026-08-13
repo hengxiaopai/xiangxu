@@ -16,6 +16,7 @@ export function runDatabaseIntegrationTests(databaseUrl, redisUrl) {
     "src/postgres/capture-proposal.integration.test.ts",
     "src/postgres/stage6-async.integration.test.ts",
     "src/postgres/stage7-daily-loop.integration.test.ts",
+    "src/postgres/stage-g42-knowledge.integration.test.ts",
   ], {
     cwd: path.join(repositoryRoot, "packages", "infrastructure"),
     env: { ...process.env, DATABASE_URL: databaseUrl, REDIS_URL: redisUrl },

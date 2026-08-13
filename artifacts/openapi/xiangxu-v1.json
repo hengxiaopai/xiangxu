@@ -1290,6 +1290,320 @@
         }
       }
     },
+    "/api/v1/knowledge/overview": {
+      "get": {
+        "operationId": "getKnowledgeOverview",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeOverview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/libraries": {
+      "get": {
+        "operationId": "listLibraries",
+        "responses": {
+          "200": {
+            "description": "Library list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Library"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createLibrary",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLibraryCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "RFC 9457 Problem Details",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/captures/{id}/triage-proposals": {
       "post": {
         "operationId": "generateStructuredTriageProposal",
@@ -2260,6 +2574,7 @@
               "plan_snapshot",
               "execution_record",
               "review_snapshot",
+              "library",
               "change_record"
             ]
           },
@@ -2295,6 +2610,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -2321,6 +2637,7 @@
                 "calendar",
                 "captures",
                 "proposals",
+                "knowledge",
                 "review"
               ]
             }
@@ -2736,6 +3053,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -2772,6 +3090,7 @@
                         "plan_snapshot",
                         "execution_record",
                         "review_snapshot",
+                        "library",
                         "change_record"
                       ]
                     },
@@ -2900,6 +3219,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -3077,6 +3397,7 @@
                   "plan_snapshot",
                   "execution_record",
                   "review_snapshot",
+                  "library",
                   "change_record"
                 ]
               },
@@ -3125,6 +3446,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -3151,6 +3473,7 @@
                 "calendar",
                 "captures",
                 "proposals",
+                "knowledge",
                 "review"
               ]
             }
@@ -3197,6 +3520,7 @@
                   "plan_snapshot",
                   "execution_record",
                   "review_snapshot",
+                  "library",
                   "change_record"
                 ]
               },
@@ -3400,6 +3724,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -3579,6 +3904,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -3620,6 +3946,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -3660,6 +3987,205 @@
         ],
         "additionalProperties": false
       },
+      "Library": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+          },
+          "ownerId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          },
+          "createdBy": {
+            "type": "object",
+            "properties": {
+              "actorType": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "system",
+                  "ai",
+                  "connector"
+                ]
+              },
+              "actorId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+              }
+            },
+            "required": [
+              "actorType",
+              "actorId"
+            ],
+            "additionalProperties": false
+          },
+          "archivedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          }
+        },
+        "required": [
+          "id",
+          "ownerId",
+          "name",
+          "description",
+          "settings",
+          "createdAt",
+          "createdBy"
+        ],
+        "additionalProperties": false
+      },
+      "KnowledgeOverview": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "added": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "unread": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "reading": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settled": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "longUnread": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "added",
+              "unread",
+              "reading",
+              "settled",
+              "longUnread"
+            ],
+            "additionalProperties": false
+          },
+          "libraries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                  "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+                },
+                "ownerId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                  "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": {
+                  "type": "string"
+                },
+                "settings": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {}
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                },
+                "createdBy": {
+                  "type": "object",
+                  "properties": {
+                    "actorType": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "system",
+                        "ai",
+                        "connector"
+                      ]
+                    },
+                    "actorId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                      "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+                    }
+                  },
+                  "required": [
+                    "actorType",
+                    "actorId"
+                  ],
+                  "additionalProperties": false
+                },
+                "archivedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                }
+              },
+              "required": [
+                "id",
+                "ownerId",
+                "name",
+                "description",
+                "settings",
+                "createdAt",
+                "createdBy"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "metrics",
+          "libraries"
+        ],
+        "additionalProperties": false
+      },
       "DurableEvent": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
@@ -3680,6 +4206,7 @@
                     "plan_snapshot",
                     "execution_record",
                     "review_snapshot",
+                    "library",
                     "change_record"
                   ]
                 },
@@ -3706,6 +4233,7 @@
                 "calendar",
                 "captures",
                 "proposals",
+                "knowledge",
                 "review"
               ]
             }
@@ -3837,6 +4365,7 @@
                             "plan_snapshot",
                             "execution_record",
                             "review_snapshot",
+                            "library",
                             "change_record"
                           ]
                         },
@@ -3863,6 +4392,7 @@
                         "calendar",
                         "captures",
                         "proposals",
+                        "knowledge",
                         "review"
                       ]
                     }
@@ -3933,6 +4463,7 @@
                             "plan_snapshot",
                             "execution_record",
                             "review_snapshot",
+                            "library",
                             "change_record"
                           ]
                         },
@@ -3959,6 +4490,7 @@
                         "calendar",
                         "captures",
                         "proposals",
+                        "knowledge",
                         "review"
                       ]
                     }
@@ -4039,6 +4571,7 @@
                             "plan_snapshot",
                             "execution_record",
                             "review_snapshot",
+                            "library",
                             "change_record"
                           ]
                         },
@@ -4065,6 +4598,7 @@
                         "calendar",
                         "captures",
                         "proposals",
+                        "knowledge",
                         "review"
                       ]
                     }
@@ -4149,6 +4683,7 @@
                         "calendar",
                         "captures",
                         "proposals",
+                        "knowledge",
                         "review"
                       ]
                     }
@@ -4585,6 +5120,54 @@
         ],
         "additionalProperties": false
       },
+      "CreateLibraryCommand": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+          },
+          "sourceContext": {
+            "type": "object",
+            "properties": {
+              "route": {
+                "type": "string",
+                "minLength": 1
+              },
+              "surface": {
+                "type": "string",
+                "minLength": 1
+              },
+              "clientId": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "libraryId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "description": "Canonical lowercase RFC 9562 UUID version 7 text"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "commandId",
+          "sourceContext",
+          "libraryId",
+          "name"
+        ],
+        "additionalProperties": false
+      },
       "GenerateStructuredTriageProposalCommand": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
@@ -4666,6 +5249,7 @@
                         "plan_snapshot",
                         "execution_record",
                         "review_snapshot",
+                        "library",
                         "change_record"
                       ]
                     },

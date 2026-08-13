@@ -8,12 +8,14 @@ import {
   completeTaskCommandSchema,
   compareRequiredIfMatch,
   createCaptureCommandSchema,
+  createLibraryCommandSchema,
   createTaskCommandSchema,
   createTimeBlockCommandSchema,
   decodeSseEnvelope,
   encodeSseEnvelope,
   formatRevisionEtag,
   idempotencyKeySchema,
+  knowledgeOverviewDtoSchema,
   offlineCaptureCommandSchema,
   parseRequiredIfMatch,
   parseRevisionEtag,
@@ -126,6 +128,27 @@ describe("Task, TimeBlock and Capture DTOs", () => {
     };
     expect(captureItemDtoSchema.parse(capture)).toEqual(capture);
     expect(captureItemDtoSchema.safeParse({ ...capture, rawText: "Call supplier" }).success).toBe(false);
+  });
+});
+
+describe("Knowledge Library contracts", () => {
+  it("keeps ownership server-resolved and validates a real overview projection", () => {
+    const command = { ...metadata, libraryId: id, name: "研究资料", description: "长期阅读" };
+    expect(createLibraryCommandSchema.parse(command)).toEqual(command);
+    expect(createLibraryCommandSchema.safeParse({ ...command, ownerId }).success).toBe(false);
+    const overview = {
+      metrics: { added: 0, unread: 0, reading: 0, settled: 0, longUnread: 0 },
+      libraries: [{
+        id,
+        ownerId,
+        name: "研究资料",
+        description: "长期阅读",
+        settings: {},
+        createdAt: "2026-08-13T09:00:00+08:00",
+        createdBy: actor,
+      }],
+    };
+    expect(knowledgeOverviewDtoSchema.parse(overview)).toEqual(overview);
   });
 });
 

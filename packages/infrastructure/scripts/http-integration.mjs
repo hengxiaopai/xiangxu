@@ -168,7 +168,7 @@ async function createDirectSession(pool, subject, { expired = false } = {}) {
 export async function runStage3HttpIntegration(databaseUrl) {
   const pool = new Pool({ connectionString: databaseUrl, max: 5 });
   try {
-    await pool.query("TRUNCATE planning.review_snapshots, planning.execution_records, planning.plan_snapshot_items, planning.plan_snapshots, ai.proposal_targets, ai.proposals, capture.capture_items, capture.raw_payloads, planning.time_blocks, audit.change_records, infra.outbox_events, infra.idempotency_keys, core.task_details, core.objects, identity.device_sessions, identity.users RESTART IDENTITY CASCADE");
+    await pool.query("TRUNCATE knowledge.libraries, planning.review_snapshots, planning.execution_records, planning.plan_snapshot_items, planning.plan_snapshots, ai.proposal_targets, ai.proposals, capture.capture_items, capture.raw_payloads, planning.time_blocks, audit.change_records, infra.outbox_events, infra.idempotency_keys, core.task_details, core.objects, identity.device_sessions, identity.users RESTART IDENTITY CASCADE");
 
     await withServer("production", databaseUrl, async () => {
       await expectProblem(await jsonRequest("/api/dev/session", { method: "POST", body: {} }), 404, "NOT_FOUND");
@@ -815,6 +815,43 @@ export async function runStage3HttpIntegration(databaseUrl) {
         foreignPlanIsolationStream, 1, foreignPlanIsolationController, 3_000, (block) => block === ": heartbeat",
       ))[0], ": heartbeat");
 
+      const knowledgeOverviewPath = "/api/v1/knowledge/overview";
+      const librariesPath = "/api/v1/libraries";
+      await expectProblem(await jsonRequest(knowledgeOverviewPath), 401, "AUTH_REQUIRED");
+      const libraryBody = command({ libraryId: uuidv7(), name: "研究资料", description: "Gate 4.2 real Library" });
+      await expectProblem(await jsonRequest(librariesPath, {
+        method: "POST", cookie: cookieA, body: { ...libraryBody, ownerId: uuidv7() },
+        headers: { "Idempotency-Key": "g42-library-malicious" },
+      }), 400, "VALIDATION_ERROR");
+      const libraryCursor = (await pool.query("SELECT max(sequence)::text cursor FROM infra.outbox_events")).rows[0].cursor;
+      const libraryStreamController = new globalThis.AbortController();
+      const libraryStream = await jsonRequest("/api/v1/stream", {
+        cookie: cookieA, headers: { "Last-Event-ID": libraryCursor }, signal: libraryStreamController.signal,
+      });
+      const libraryHeaders = { "Idempotency-Key": "g42-library-create-001" };
+      const libraryCreated = await jsonRequest(librariesPath, {
+        method: "POST", cookie: cookieA, body: libraryBody, headers: libraryHeaders,
+      });
+      assert.equal(libraryCreated.status, 201);
+      assert.ok((await libraryCreated.json()).affectedRefs.some(({ objectType, id }) => objectType === "library" && id === libraryBody.libraryId));
+      const libraryBlocks = await readSseBlocks(libraryStream, 1, libraryStreamController, 3_000, (block) => block.startsWith("id: "));
+      assert.match(libraryBlocks[0], /"knowledge"/u);
+      assert.match(libraryBlocks[0], new RegExp(libraryBody.libraryId, "u"));
+      const libraryReplay = await jsonRequest(librariesPath, {
+        method: "POST", cookie: cookieA, body: libraryBody, headers: libraryHeaders,
+      });
+      assert.equal(libraryReplay.status, 201);
+      const knowledgeOverview = await (await jsonRequest(knowledgeOverviewPath, { cookie: cookieA })).json();
+      assert.deepEqual(knowledgeOverview.metrics, { added: 0, unread: 0, reading: 0, settled: 0, longUnread: 0 });
+      assert.deepEqual(knowledgeOverview.libraries.map(({ id, name }) => ({ id, name })), [{ id: libraryBody.libraryId, name: "研究资料" }]);
+      assert.deepEqual(await (await jsonRequest(librariesPath, { cookie: sessionB.cookie })).json(), []);
+      const libraryAudit = await pool.query(`SELECT
+        (SELECT count(*)::int FROM knowledge.libraries WHERE owner_id=$1) libraries,
+        (SELECT count(*)::int FROM audit.change_records WHERE target_type='library' AND actor_id=$1) changes,
+        (SELECT count(*)::int FROM infra.outbox_events WHERE target_type='library') outbox,
+        (SELECT count(*)::int FROM infra.idempotency_keys WHERE command_type='knowledge.library.create') keys`, [owner]);
+      assert.deepEqual(libraryAudit.rows[0], { libraries: 1, changes: 1, outbox: 1, keys: 1 });
+
       const deleted = await jsonRequest("/api/dev/session", { method: "DELETE", cookie: cookieA });
       assert.equal(deleted.status, 204);
       assert.match(deleted.headers.get("set-cookie") ?? "", /Max-Age=0/iu);
@@ -823,7 +860,7 @@ export async function runStage3HttpIntegration(databaseUrl) {
       await expectProblem(await jsonRequest(`/api/v1/tasks/${createBody.taskId}`, { cookie: cookieA }), 401, "AUTH_REQUIRED");
     });
 
-    console.log("Stage 3 through Stage 7 production-build HTTP integration PASS — Task/TimeBlock/Capture/Proposal plus immutable Plan/Today/Review, zero-fabricated actuals, idempotency, concurrency, actor-isolated PostgreSQL SSE, resync and heartbeat verified.");
+    console.log("Stage 3 through Gate 4.2 Stage 1 production-build HTTP integration PASS — Task/TimeBlock/Capture/Proposal/Plan/Today/Review plus actor-isolated Knowledge Library creation, projection, idempotency, audit and PostgreSQL SSE verified.");
   } finally {
     await pool.end();
   }

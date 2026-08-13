@@ -117,6 +117,17 @@ body {
   text-decoration: none;
 }
 
+.daily-shell__sidebar nav span[aria-disabled="true"] {
+  border-radius: var(--xx-radius-control);
+  padding: var(--xx-space-2) var(--xx-space-3);
+  color: var(--xx-color-text-tertiary);
+}
+
+.daily-shell__sidebar nav a[aria-current="page"] {
+  background: var(--xx-color-brand-soft);
+  color: var(--xx-color-brand-primary);
+}
+
 .daily-shell__sidebar nav a:hover {
   background: var(--xx-color-bg-subtle);
 }
@@ -268,6 +279,7 @@ body {
 }
 
 .daily-form input[type="number"],
+.daily-form input[type="text"],
 .daily-form textarea {
   width: 100%;
   border: var(--xx-border-width-default) solid var(--xx-color-border-strong);
@@ -277,6 +289,99 @@ body {
   color: var(--xx-color-text-primary);
   font: inherit;
 }
+
+.knowledge-page {
+  width: min(100%, var(--xx-layout-canvas-max));
+  margin-inline: auto;
+  display: grid;
+  gap: var(--xx-space-8);
+}
+
+.knowledge-page__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--xx-space-8);
+}
+
+.knowledge-page__header h1,
+.knowledge-page__header p,
+.library-card h3,
+.library-card p,
+.knowledge-rail-card h2,
+.knowledge-rail-card p {
+  margin-block: 0;
+}
+
+.knowledge-page__header h1 {
+  margin-block: var(--xx-space-1);
+  font-size: var(--xx-font-size-page-title);
+  line-height: var(--xx-line-height-page-title);
+  font-weight: var(--xx-font-weight-page-title);
+}
+
+.knowledge-page__header > div > p:last-child {
+  color: var(--xx-color-text-secondary);
+}
+
+.knowledge-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-block: var(--xx-border-width-default) solid var(--xx-color-border);
+}
+
+.knowledge-metric {
+  display: grid;
+  gap: var(--xx-space-1);
+  padding: var(--xx-space-4);
+  border-right: var(--xx-border-width-default) solid var(--xx-color-border);
+}
+
+.knowledge-metric:last-child {
+  border-right: 0;
+}
+
+.knowledge-metric strong {
+  font-size: var(--xx-font-size-section-title);
+  line-height: var(--xx-line-height-section-title);
+}
+
+.knowledge-metric span,
+.library-card small {
+  color: var(--xx-color-text-secondary);
+  font-size: var(--xx-font-size-ui-label);
+}
+
+.knowledge-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--xx-shell-rail-width);
+  align-items: start;
+  gap: var(--xx-space-8);
+}
+
+.knowledge-layout__primary,
+.knowledge-layout__rail,
+.library-card,
+.knowledge-rail-card {
+  display: grid;
+  gap: var(--xx-space-4);
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--xx-space-4);
+}
+
+.library-card h3 {
+  font-size: var(--xx-font-size-section-title);
+  line-height: var(--xx-line-height-section-title);
+}
+
+.library-card p {
+  color: var(--xx-color-text-secondary);
+}
+
 
 .daily-form textarea {
   min-height: calc(var(--xx-control-height-lg) * 3);

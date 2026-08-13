@@ -4,6 +4,7 @@ import {
   DevSessionHandlers,
   CaptureHandlers,
   DeterministicStructuredProposalGenerator,
+  KnowledgeHandlers,
   PlanReviewHandlers,
   ProposalHandlers,
   TaskHandlers,
@@ -47,6 +48,7 @@ let services: {
   readonly captures: CaptureHandlers;
   readonly proposals: ProposalHandlers;
   readonly dailyLoop: PlanReviewHandlers;
+  readonly knowledge: KnowledgeHandlers;
   readonly sessions: DevSessionHandlers;
   readonly stream: PgSseEventStream;
 } | undefined;
@@ -62,6 +64,7 @@ function runtimeServices() {
       new PgUnitOfWork(pool), runtime, new DeterministicStructuredProposalGenerator(),
     ),
     dailyLoop: new PlanReviewHandlers(new PgUnitOfWork(pool), runtime),
+    knowledge: new KnowledgeHandlers(new PgUnitOfWork(pool), runtime),
     sessions: new DevSessionHandlers(
       new PgIdentityRepository(pool),
       new PgDeviceSessionRepository(pool),
@@ -101,6 +104,12 @@ export const dailyLoopHandlers = {
   getToday: (...args: Parameters<PlanReviewHandlers["getToday"]>) => runtimeServices().dailyLoop.getToday(...args),
   createReview: (...args: Parameters<PlanReviewHandlers["createReview"]>) => runtimeServices().dailyLoop.createReview(...args),
   getReview: (...args: Parameters<PlanReviewHandlers["getReview"]>) => runtimeServices().dailyLoop.getReview(...args),
+};
+
+export const knowledgeHandlers = {
+  createLibrary: (...args: Parameters<KnowledgeHandlers["createLibrary"]>) => runtimeServices().knowledge.createLibrary(...args),
+  listLibraries: (...args: Parameters<KnowledgeHandlers["listLibraries"]>) => runtimeServices().knowledge.listLibraries(...args),
+  getOverview: (...args: Parameters<KnowledgeHandlers["getOverview"]>) => runtimeServices().knowledge.getOverview(...args),
 };
 
 export const devSessionHandlers = {

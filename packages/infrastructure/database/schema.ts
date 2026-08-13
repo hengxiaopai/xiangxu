@@ -26,6 +26,7 @@ const identity = pgSchema("identity");
 const core = pgSchema("core");
 const planning = pgSchema("planning");
 const capture = pgSchema("capture");
+const knowledge = pgSchema("knowledge");
 const ai = pgSchema("ai");
 const audit = pgSchema("audit");
 const infra = pgSchema("infra");
@@ -100,6 +101,26 @@ export const taskDetails = core.table(
   (table) => [
     check("task_details_commitment", sql`${table.commitmentState} IN ('committed', 'someday')`),
     check("task_details_single_due", sql`${table.dueOn} IS NULL OR ${table.dueAt} IS NULL`),
+  ],
+);
+
+export const libraries = knowledge.table(
+  "libraries",
+  {
+    id: uuid("id").default(sql`uuidv7()`).primaryKey(),
+    ownerId: uuid("owner_id").notNull().references(() => users.id),
+    name: text("name").notNull(),
+    description: text("description").default("").notNull(),
+    settings: jsonb("settings").$type<Readonly<Record<string, unknown>>>().default(sql`'{}'::jsonb`).notNull(),
+    createdByType: text("created_by_type").notNull(),
+    createdById: uuid("created_by_id").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+  },
+  (table) => [
+    check("libraries_name_nonempty", sql`length(btrim(${table.name})) > 0`),
+    check("libraries_created_by_user", sql`${table.createdByType} = 'user' AND ${table.createdById} = ${table.ownerId}`),
+    index("libraries_owner_created_idx").on(table.ownerId, table.createdAt),
   ],
 );
 

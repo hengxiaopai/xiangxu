@@ -109,7 +109,7 @@ describe.sequential("Gate 4.1 Stage 2 PostgreSQL foundation", () => {
     const history = await pool.query<{ count: number }>(
       `SELECT COUNT(*)::integer AS count FROM drizzle.__drizzle_migrations`,
     );
-    expect(history.rows[0]?.count).toBe(6);
+    expect(history.rows[0]?.count).toBe(7);
     const required = await pool.query<{ name: string }>(
       `SELECT table_schema || '.' || table_name AS name FROM information_schema.tables
        WHERE (table_schema, table_name) IN (

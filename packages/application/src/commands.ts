@@ -104,6 +104,15 @@ export type CreateReviewSnapshot = CommandEnvelope<
   }
 >;
 
+export type CreateLibrary = CommandEnvelope<
+  "knowledge.library.create",
+  {
+    readonly libraryId: UUIDv7;
+    readonly name: string;
+    readonly description?: string;
+  }
+>;
+
 export type StageOneCommand =
   | CreateTask
   | CompleteTask
@@ -113,7 +122,8 @@ export type StageOneCommand =
   | GenerateStructuredTriageProposal
   | ApplyProposal
   | CommitDailyPlan
-  | CreateReviewSnapshot;
+  | CreateReviewSnapshot
+  | CreateLibrary;
 
 export interface StructuredProposalCandidate {
   readonly proposalType: "classify" | "create";

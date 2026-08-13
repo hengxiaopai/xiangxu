@@ -4,6 +4,7 @@ import type { Pool } from "pg";
 import { PgChangeRecordRepository, PgOutboxRepository } from "./audit-outbox-repositories.js";
 import { PgCaptureRepository, PgProposalRepository } from "./capture-proposal-repositories.js";
 import { PgIdempotencyRepository } from "./idempotency-repository.js";
+import { PgKnowledgeRepository } from "./knowledge-repository.js";
 import { PgTaskRepository } from "./task-repository.js";
 import { PgPlanningLock, PgTimeBlockRepository } from "./time-block-repository.js";
 import {
@@ -28,6 +29,7 @@ export class PgUnitOfWork implements UnitOfWork {
         reviewSnapshots: new PgReviewSnapshotRepository(client),
         captures: new PgCaptureRepository(client),
         proposals: new PgProposalRepository(client),
+        knowledge: new PgKnowledgeRepository(client),
         changes: new PgChangeRecordRepository(client),
         outbox: new PgOutboxRepository(client),
         idempotency: new PgIdempotencyRepository(client),

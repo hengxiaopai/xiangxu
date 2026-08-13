@@ -56,11 +56,13 @@ async function main() {
     const origin = `http://127.0.0.1:${port}`;
     const login = await waitForRoute(`${origin}/login`, 'data-shell="login"');
     const today = await waitForRoute(`${origin}/app/today`, 'data-page="today"');
+    const knowledge = await waitForRoute(`${origin}/app/knowledge`, 'data-page="knowledge"');
     const review = await waitForRoute(`${origin}/app/review`, 'data-page="review"');
     assert.equal(login, 200);
     assert.equal(today, 200);
+    assert.equal(knowledge, 200);
     assert.equal(review, 200);
-    console.log(`Web smoke PASS — /login ${login}; /app/today ${today}; /app/review ${review}; port ${port}.`);
+    console.log(`Web smoke PASS — /login ${login}; /app/today ${today}; /app/knowledge ${knowledge}; /app/review ${review}; port ${port}.`);
   } catch (error) {
     throw new Error(`${error instanceof Error ? error.message : String(error)}\n${output}`, { cause: error });
   } finally {

@@ -15,8 +15,14 @@ export function AppFrame({ children }: Readonly<{ children: ReactNode }>) {
     <div className="daily-shell">
       <aside className="daily-shell__sidebar">
         <p className="shell__brand">向序 XIANGXU</p>
-        <nav aria-label="Daily Loop">
+        <nav aria-label="向序核心功能">
           <a aria-current={pathname === "/app/today" ? "page" : undefined} href="/app/today">今天</a>
+          <span aria-disabled="true">收件箱</span>
+          <span aria-disabled="true">任务</span>
+          <span aria-disabled="true">日历</span>
+          <span aria-disabled="true">项目</span>
+          <a aria-current={pathname === "/app/knowledge" ? "page" : undefined} href="/app/knowledge">知识库</a>
+          <span aria-disabled="true">空间</span>
           <a aria-current={pathname === "/app/review" ? "page" : undefined} href="/app/review">复盘</a>
         </nav>
         <p aria-live="polite" className="daily-shell__connection" data-status={realtimeStatus}>{statusLabel}</p>

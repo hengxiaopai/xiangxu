@@ -133,6 +133,42 @@ test("keyboard-driven Daily Loop uses real Task, TimeBlock, Plan, dispatcher/wor
   await context.close();
 });
 
+test("Knowledge Library UI persists a canonical Fact and remains actor-isolated", async ({ browser }) => {
+  const ownerContext = await newStageContext(browser);
+  await createDirectSession(ownerContext, "g42-knowledge-owner");
+  const ownerPage = await ownerContext.newPage();
+  const ownerObserved = observePage(ownerPage, { allowedConsole: [/404 \(Not Found\)/u] });
+  await ownerPage.goto("/app/today");
+  await ownerPage.getByRole("link", { name: "知识库" }).focus();
+  await ownerPage.keyboard.press("Enter");
+  await expect(ownerPage).toHaveURL(`${baseURL}/app/knowledge`);
+  await expect(ownerPage.getByRole("heading", { name: "知识库", exact: true })).toBeVisible();
+  await expect(ownerPage.getByText("0 个知识库")).toBeVisible();
+  await ownerPage.getByRole("textbox", { name: "名称" }).fill("Gate 4.2 研究资料");
+  await ownerPage.getByRole("textbox", { name: "说明" }).fill("真实持久化、审计与投影");
+  await ownerPage.getByRole("button", { name: "创建 Library" }).focus();
+  await ownerPage.keyboard.press("Enter");
+  await expect(ownerPage.getByText("Library 已写入并同步投影。")).toBeVisible();
+  await expect(ownerPage.getByRole("heading", { name: "Gate 4.2 研究资料" })).toBeVisible();
+  await expect(ownerPage.getByText("1 个知识库")).toBeVisible();
+  await expect.poll(async () => (await sseEvents(ownerPage)).some(({ data }) => data.includes('"library"') && data.includes('"knowledge"'))).toBe(true);
+  await ownerPage.reload();
+  await expect(ownerPage.getByRole("heading", { name: "Gate 4.2 研究资料" })).toBeVisible();
+  await assertNoSecretSurface(ownerPage, expect);
+  ownerObserved.assertClean(expect);
+  await ownerContext.close();
+
+  const foreignContext = await newStageContext(browser);
+  await createDirectSession(foreignContext, "g42-knowledge-foreign");
+  const foreignPage = await foreignContext.newPage();
+  const foreignObserved = observePage(foreignPage, { allowedConsole: [/404 \(Not Found\)/u] });
+  await foreignPage.goto("/app/knowledge");
+  await expect(foreignPage.getByText("0 个知识库")).toBeVisible();
+  await expect(foreignPage.getByRole("heading", { name: "Gate 4.2 研究资料" })).toHaveCount(0);
+  foreignObserved.assertClean(expect);
+  await foreignContext.close();
+});
+
 test("SSE reconnect replays missed committed events with Last-Event-ID", async ({ browser }) => {
   const context = await newStageContext(browser);
   const session = await createDirectSession(context, "stage8-sse-reconnect");

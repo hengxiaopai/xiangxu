@@ -12,6 +12,7 @@ import {
   completeTaskCommandSchema,
   contractMetadataSchema,
   createCaptureCommandSchema,
+  createLibraryCommandSchema,
   createReviewSnapshotCommandSchema,
   createTaskCommandSchema,
   createTimeBlockCommandSchema,
@@ -20,6 +21,8 @@ import {
   durableEventSchema,
   executionRecordDtoSchema,
   generateStructuredTriageProposalCommandSchema,
+  knowledgeOverviewDtoSchema,
+  libraryDtoSchema,
   moveTimeBlockCommandSchema,
   mutationResultSchema,
   objectRefSchema,
@@ -73,6 +76,8 @@ const schemaEntries = {
   PlanSnapshot: planSnapshotDtoSchema,
   ExecutionRecord: executionRecordDtoSchema,
   ReviewSnapshot: reviewSnapshotDtoSchema,
+  Library: libraryDtoSchema,
+  KnowledgeOverview: knowledgeOverviewDtoSchema,
   DurableEvent: durableEventSchema,
   SseEventEnvelope: sseEnvelopeSchema,
   OfflineCaptureCommand: offlineCaptureCommandSchema,
@@ -81,6 +86,7 @@ const schemaEntries = {
   CreateTimeBlockCommand: createTimeBlockCommandSchema,
   MoveTimeBlockCommand: moveTimeBlockCommandSchema,
   CreateCaptureCommand: createCaptureCommandSchema,
+  CreateLibraryCommand: createLibraryCommandSchema,
   GenerateStructuredTriageProposalCommand: generateStructuredTriageProposalCommandSchema,
   ApplyProposalCommand: applyProposalCommandSchema,
   CommitDailyPlanCommand: commitDailyPlanCommandSchema,
@@ -127,6 +133,13 @@ export function createOpenApiDocument() {
       },
       "/api/v1/captures/{id}": {
         get: { operationId: "getCapture", parameters: [idParameter], responses: { "200": jsonResponse("CaptureItem"), ...errors } },
+      },
+      "/api/v1/knowledge/overview": {
+        get: { operationId: "getKnowledgeOverview", responses: { "200": jsonResponse("KnowledgeOverview"), ...errors } },
+      },
+      "/api/v1/libraries": {
+        get: { operationId: "listLibraries", responses: { "200": { description: "Library list", content: { "application/json": { schema: { type: "array", items: ref("Library") } } } }, ...errors } },
+        post: { operationId: "createLibrary", parameters: [idempotencyParameter], requestBody: requestBody("CreateLibraryCommand"), responses: { "201": jsonResponse("MutationResult", "Created"), ...errors } },
       },
       "/api/v1/captures/{id}/triage-proposals": {
         post: { operationId: "generateStructuredTriageProposal", parameters: [idParameter, idempotencyParameter], requestBody: requestBody("GenerateStructuredTriageProposalCommand"), responses: { "202": jsonResponse("MutationResult", "Accepted"), ...errors } },

@@ -2,8 +2,9 @@
 
 ## Current Gate
 
-- Current gate: **Gate 4.1 — Daily Loop Vertical Slice**.
-- Current completed implementation stage: **Stage 8 — Production Chromium E2E + Responsive + A11y + Visual + IndexedDB Proof**.
+- Current gate: **Gate 4.2 — Knowledge Core**.
+- Current completed stage: **Stage 1 — Library Foundation + Knowledge Overview**. Stage 2 has not started.
+- Gate 4.1 Stage 9 passed final publication recovery and exact-commit hosted CI for `800aaca815038464bc09ee0b8e6d2d922a23c2dc`; Gate 4.1 is CLOSED.
 - Stage 9 local final audit passed and final publication was authorized on 2026-08-13. Initial candidate commit `cc782682e15c3a89643550d6937d56e035aedd9b` was pushed to `main`; hosted run `31696961596` passed unified verification but failed production Chromium on an expected Linux SSE disconnect diagnostic and non-portable Windows pixel baselines. A bounded publication recovery was explicitly approved.
 - Stage 3 passed production-profile fail-closed Dev Session, secure hash-only session persistence, server Actor resolution, actor isolation, transactional Create/Complete with PostgreSQL CAS/ChangeRecord/Outbox/Idempotency, real production-build HTTP integration, and unified verification on 2026-08-13.
 - Stage 0 passed exact dependency/native/lifecycle review, observable pnpm resolver recovery, Chromium-only Playwright dry-run provenance, deterministic frozen installation, native tooling smoke, revision/HTTP ADR, path-aware Web composition boundary fixtures, and unified verification on 2026-08-12.
@@ -15,7 +16,7 @@
 - Gate 4.1 Stage 7 passed frozen Plan/Review Contract audit, additive migration 0005, immutable Plan/Review snapshots, safe daily version allocation, zero-fabricated ExecutionRecord semantics, traceable deterministic Review, actor-scoped Today/Review/SSE, bounded token-first `/app/today` and `/app/review` UI, two-cycle PostgreSQL 18.4 rebuild, real production-build HTTP integration, and unified verification on 2026-08-13.
 - Gate 4.1 Stage 8 passed real production-stack bundled-Chromium verification, actor-isolated authentication/SSE/TanStack behavior, real IndexedDB reload/offline/Auth Epoch safety, two independent reviewed visual-baseline runs, responsive Light/Dark and keyboard/reduced-motion accessibility audits, frozen artifact checks, and unified verification on 2026-08-13.
 - Gate 4.1 Stage 9 local audit passed clean-room frozen installation, deterministic migration generation, two-cycle PostgreSQL rebuild, unified verification, production Chromium verification, publication-set safety review, and Handoff integrity checks on 2026-08-13. Formal closure is fail-closed: `origin/main`, local `HEAD`, and a successful hosted CI `head_sha` must identify the same final recovery commit.
-- Gate 4.2 has not started.
+- Gate 4.2 Stage 1 passed the owner-scoped Library support entity, real Library create/list and Knowledge Overview projection, additive migration 0006, Application-command idempotency/audit/Outbox, actor-isolated SSE invalidation, `/app/knowledge`, responsive Light/Dark visual review, production Chromium, two-cycle PostgreSQL rebuild and unified verification on 2026-08-13. Resource materialization, membership, Reading Queue mutation, Note/Topic/Relation, Explore, provider AI, search, upload, connector, and Gate 4.2 Stage 2 are not started.
 - Stage 5 passed PostgreSQL 18.4 clean rebuild, deterministic Drizzle migration, Redis 8.2.8 health, BullMQ pure-JavaScript fake-job smoke, boundary enforcement, and unified verification on 2026-08-12.
 - Lifecycle policy allows exact `esbuild@0.18.20`, `esbuild@0.25.12`, and `esbuild@0.28.2`; explicitly denies exact `msgpackr-extract@3.0.4` and `fsevents@2.3.2`; every other lifecycle/build script remains denied.
 - Stage 6 passed publication safety, SHA-pinned GitHub Actions policy, fresh frozen installation, unified verification, infrastructure cleanup, and a real `ubuntu-24.04` hosted run for exact commit `964a965dfd6b6161c3a55f30fc557b255a68fea1` on 2026-08-12.
@@ -85,6 +86,14 @@ Stage 2 enforces these rules through `tools/boundary/boundary-matrix.json`, mani
 - Stage 9: final Gate audit/publication checkpoint.
 
 Do not create later-Stage implementation to make the current Stage look complete.
+
+## Gate 4.2 Stage Ownership
+
+- Stage 1: Library support entity + Knowledge Overview vertical slice.
+- Stage 2: separately approved Capture/Proposal-to-Resource materialization + Library membership + Reading Queue.
+- Later stages: Note/Knowledge/Topic/Relation, Resurface/Search, advanced Explore and final verification only after separate approval.
+
+Do not bypass Capture → Proposal → Fact by adding a direct Resource creation route in Stage 1.
 
 ## Root Commands
 

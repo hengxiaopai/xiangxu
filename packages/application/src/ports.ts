@@ -5,6 +5,8 @@ import type {
   DurableEvent,
   ExecutionRecord,
   IanaTimeZone,
+  KnowledgeOverview,
+  Library,
   ObjectRef,
   PlanSnapshot,
   Proposal,
@@ -123,6 +125,12 @@ export interface ProposalRepository {
   markApplied(id: UUIDv7): Promise<boolean>;
 }
 
+export interface KnowledgeRepository {
+  insertLibrary(library: Library): Promise<Library>;
+  listLibraries(ownerId: UUIDv7): Promise<readonly Library[]>;
+  getOverview(ownerId: UUIDv7): Promise<KnowledgeOverview>;
+}
+
 export interface ProposalGeneratorInput {
   readonly proposalId: UUIDv7;
   readonly capture: CaptureItem;
@@ -169,6 +177,7 @@ export interface TransactionRepositories {
   readonly reviewSnapshots: ReviewSnapshotRepository;
   readonly captures: CaptureRepository;
   readonly proposals: ProposalRepository;
+  readonly knowledge: KnowledgeRepository;
   readonly changes: ChangeRecordRepository;
   readonly outbox: OutboxRepository;
   readonly idempotency: IdempotencyRepository;

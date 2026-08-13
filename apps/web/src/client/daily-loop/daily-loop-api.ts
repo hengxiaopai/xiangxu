@@ -1,11 +1,14 @@
 import {
   mutationResultSchema,
+  createLibraryCommandSchema,
+  knowledgeOverviewDtoSchema,
   planSnapshotDtoSchema,
   problemDetailsSchema,
   proposalDtoSchema,
   reviewSnapshotDtoSchema,
   taskDtoSchema,
   type PlanSnapshotDto,
+  type KnowledgeOverviewDto,
   type ProposalDto,
   type ReviewSnapshotDto,
   type TaskDto,
@@ -32,6 +35,35 @@ export async function getTasks(): Promise<readonly TaskDto[]> {
   const response = await fetch("/api/v1/tasks", { credentials: "same-origin" });
   if (!response.ok) return problemFrom(response);
   return taskDtoSchema.array().parse(await response.json());
+}
+
+export async function getKnowledgeOverview(): Promise<KnowledgeOverviewDto> {
+  const response = await fetch("/api/v1/knowledge/overview", { credentials: "same-origin" });
+  if (!response.ok) return problemFrom(response);
+  return knowledgeOverviewDtoSchema.parse(await response.json());
+}
+
+export async function createLibrary(input: {
+  readonly libraryId: string;
+  readonly name: string;
+  readonly description?: string;
+  readonly commandId: string;
+}): Promise<MutationResult> {
+  const body = createLibraryCommandSchema.parse({
+    commandId: input.commandId,
+    sourceContext: { route: "/app/knowledge", surface: "knowledge-overview" },
+    libraryId: input.libraryId,
+    name: input.name,
+    ...(input.description === undefined ? {} : { description: input.description }),
+  });
+  const response = await fetch("/api/v1/libraries", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json", "Idempotency-Key": input.commandId },
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) return problemFrom(response);
+  return mutationResultSchema.parse(await response.json());
 }
 
 export async function getToday(date: string, timezone: string): Promise<PlanSnapshotDto | null> {

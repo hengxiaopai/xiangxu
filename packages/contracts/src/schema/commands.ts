@@ -66,6 +66,12 @@ export const createReviewSnapshotCommandSchema = withCommandMetadata({
   executionRecordIds: z.array(uuidV7Schema),
 });
 
+export const createLibraryCommandSchema = withCommandMetadata({
+  libraryId: uuidV7Schema,
+  name: z.string().trim().min(1),
+  description: z.string().optional(),
+});
+
 export const offlineCaptureCommandSchema = z
   .object({
     localId: uuidV7Schema,

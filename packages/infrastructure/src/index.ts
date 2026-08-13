@@ -1,6 +1,7 @@
 export * from "./postgres/idempotency-repository.js";
 export * from "./postgres/capture-proposal-repositories.js";
 export * from "./postgres/identity-repository.js";
+export * from "./postgres/knowledge-repository.js";
 export * from "./postgres/pool.js";
 export * from "./postgres/planning-review-repositories.js";
 export * from "./postgres/sse-event-stream.js";

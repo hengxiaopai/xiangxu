@@ -137,11 +137,11 @@ afterAll(async () => {
 });
 
 describe.sequential("Gate 4.1 Stage 7 Daily Loop", () => {
-  it("applies exactly migration 0005 and creates only the four authorized Support Entity tables", async () => {
+  it("retains the exact migration 0005 Planning slice after additive migration 0006", async () => {
     const history = await pool.query<{ count: number }>(
       "SELECT COUNT(*)::integer AS count FROM drizzle.__drizzle_migrations",
     );
-    expect(history.rows[0]?.count).toBe(6);
+    expect(history.rows[0]?.count).toBe(7);
     const tables = await pool.query<{ name: string }>(
       `SELECT table_schema || '.' || table_name AS name
          FROM information_schema.tables

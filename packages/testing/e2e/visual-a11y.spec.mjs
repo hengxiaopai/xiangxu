@@ -103,6 +103,38 @@ test("22-shot responsive Light/Dark matrix establishes reviewed Fact/Proposal/Sn
   await context.close();
 });
 
+test("Knowledge Overview is responsive, theme-safe and honest about unavailable Resource evidence", async ({ browser }) => {
+  const context = await newStageContext(browser, { viewport: { width: 1440, height: 900 } });
+  await createDirectSession(context, "g42-knowledge-visual");
+  const page = await context.newPage();
+  const observed = observePage(page);
+  await page.goto("/app/knowledge");
+  await expect(page.getByRole("heading", { name: "知识库", exact: true })).toBeVisible();
+  await page.getByRole("textbox", { name: "名称" }).fill("产品研究");
+  await page.getByRole("textbox", { name: "说明" }).fill("沉淀长期有效的产品与技术资料");
+  await page.getByRole("button", { name: "创建 Library" }).click();
+  await expect(page.getByRole("heading", { name: "产品研究" })).toBeVisible();
+  await expect(page.getByText("尚无 Goal / Project / Resource 证据，因此不生成伪推荐。")).toBeVisible();
+
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    for (const theme of ["light", "dark"]) {
+      await setTheme(page, theme);
+      await assertGeometry(page, viewport);
+      await assertHeadingOrder(page);
+      await assertOntologyContrast(page);
+      await expectReviewedScreenshot(
+        page,
+        `responsive/knowledge-${viewport.width}x${viewport.height}-${theme}.png`,
+        { ...screenshotOptions, fullPage: true },
+      );
+    }
+  }
+  await assertNoSecretSurface(page, expect);
+  observed.assertClean(expect);
+  await context.close();
+});
+
 test("keyboard focus, roles, names, headings and focus-visible remain usable", async ({ browser }) => {
   const context = await newStageContext(browser, { viewport: { width: 390, height: 844 } });
   const session = await createDirectSession(context, "stage8-keyboard-a11y");
@@ -114,7 +146,7 @@ test("keyboard focus, roles, names, headings and focus-visible remain usable", a
   const page = await context.newPage();
   const observed = observePage(page, { allowedConsole: [/404 \(Not Found\)/u] });
   await page.goto("/app/today");
-  await expect(page.getByRole("navigation", { name: "Daily Loop" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "向序核心功能" })).toBeVisible();
   await expect(page.getByRole("main")).toBeVisible();
   await expect(page.getByRole("heading", { level: 1, name: "今天" })).toBeVisible();
   await assertHeadingOrder(page);

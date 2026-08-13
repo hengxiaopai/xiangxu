@@ -6,6 +6,7 @@ import {
   createCaptureItem,
   createPlanSnapshot,
   createReviewSnapshot,
+  createLibrary as createDomainLibrary,
   createTask as createDomainTask,
   createTimeBlock as createDomainTimeBlock,
   moveTimeBlock as moveDomainTimeBlock,
@@ -17,6 +18,8 @@ import {
   type ChangeRecord,
   type DurableEvent,
   type IanaTimeZone,
+  type KnowledgeOverview,
+  type Library,
   type ObjectRef,
   type PlanSnapshot,
   type Proposal,
@@ -36,6 +39,7 @@ import type {
   CreateTask,
   CreateTimeBlock,
   CreateReviewSnapshot,
+  CreateLibrary,
   GenerateStructuredTriageProposal,
   MoveTimeBlock,
   SourceContext,
@@ -134,6 +138,17 @@ export function proposalToTransport(proposal: Proposal): Readonly<Record<string,
   };
 }
 
+export function libraryToTransport(library: Library): Readonly<Record<string, unknown>> {
+  return { ...library };
+}
+
+export function knowledgeOverviewToTransport(overview: KnowledgeOverview): Readonly<Record<string, unknown>> {
+  return {
+    metrics: overview.metrics,
+    libraries: overview.libraries.map(libraryToTransport),
+  };
+}
+
 type ImplementedCommand =
   | CreateTask
   | CompleteTask
@@ -143,7 +158,8 @@ type ImplementedCommand =
   | GenerateStructuredTriageProposal
   | ApplyProposal
   | CommitDailyPlan
-  | CreateReviewSnapshot;
+  | CreateReviewSnapshot
+  | CreateLibrary;
 
 function identity(command: ImplementedCommand): IdempotencyKeyIdentity {
   return {
@@ -307,6 +323,95 @@ function timeBlockOutboxEvent(
     correlationId: commandId,
     occurredAt,
   };
+}
+
+function libraryChangeRecord(
+  id: UUIDv7Value,
+  library: Library,
+  actor: ActorRef,
+  sourceContext: SourceContext,
+  correlationId: UUIDv7Value,
+): ChangeRecord {
+  const initialRevision = Revision.parseBigInt(1n);
+  return {
+    id,
+    entityRef: { objectType: "library", id: library.id },
+    baseRevision: initialRevision,
+    newRevision: initialRevision,
+    actor,
+    command: "create",
+    changedFieldFamilies: ["identity"],
+    sourceContext,
+    correlationId,
+    createdAt: library.createdAt,
+  };
+}
+
+function libraryOutboxEvent(
+  eventId: UUIDv7Value,
+  library: Library,
+  commandId: UUIDv7Value,
+): DurableEvent {
+  return {
+    eventId,
+    topic: "object.changed",
+    affectedRefs: [{ objectType: "library", id: library.id }],
+    projectionHints: ["knowledge"],
+    revision: Revision.parseBigInt(1n),
+    commandId,
+    correlationId: commandId,
+    occurredAt: library.createdAt,
+  };
+}
+
+export class KnowledgeHandlers {
+  constructor(private readonly unitOfWork: UnitOfWork, private readonly runtime: RuntimeValues) {}
+
+  async createLibrary(command: CreateLibrary): Promise<CommandExecutionResult> {
+    if (command.actor.actorType !== "user") {
+      throw new ApplicationError("AUTH_REQUIRED", "Library creation requires a user Actor");
+    }
+    return this.unitOfWork.transaction(async (repositories) => {
+      const replayed = await reserveOrReplay(repositories.idempotency, command);
+      if (replayed !== null) return replayed;
+      const library = createDomainLibrary({
+        id: command.payload.libraryId,
+        ownerId: command.actor.actorId,
+        name: command.payload.name,
+        ...(command.payload.description === undefined ? {} : { description: command.payload.description }),
+        createdAt: this.runtime.now(),
+        createdBy: command.actor,
+      });
+      const inserted = await repositories.knowledge.insertLibrary(library);
+      const changeId = this.runtime.newId();
+      await repositories.changes.append(libraryChangeRecord(
+        changeId,
+        inserted,
+        command.actor,
+        command.sourceContext,
+        command.commandId,
+      ));
+      await repositories.outbox.append(libraryOutboxEvent(this.runtime.newId(), inserted, command.commandId));
+      const result = {
+        status: 201,
+        body: {
+          affectedRefs: [{ objectType: "library", id: inserted.id }],
+          projectionHints: ["knowledge"],
+          changeId,
+        },
+      } as const;
+      await repositories.idempotency.complete(identity(command), result);
+      return { ...result, replayed: false };
+    });
+  }
+
+  async listLibraries(actor: ActorRef): Promise<readonly Library[]> {
+    return this.unitOfWork.transaction(({ knowledge }) => knowledge.listLibraries(actor.actorId));
+  }
+
+  async getOverview(actor: ActorRef): Promise<KnowledgeOverview> {
+    return this.unitOfWork.transaction(({ knowledge }) => knowledge.getOverview(actor.actorId));
+  }
 }
 
 export class TaskHandlers {

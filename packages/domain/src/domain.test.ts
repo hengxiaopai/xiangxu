@@ -7,6 +7,7 @@ import {
   UUIDv7,
   completeTask,
   createExecutionRecord,
+  createLibrary,
   createPlanSnapshot,
   createReviewSnapshot,
   createTask,
@@ -68,6 +69,23 @@ describe("Task invariants", () => {
     expect(completed.status).toBe("completed");
     expect(completed.revision).toBe(2n);
     expect(() => completeTask(completed, user, instant)).toThrow(/cannot transition/);
+  });
+});
+
+describe("Knowledge Library invariants", () => {
+  it("creates one owner-scoped support entity without duplicating a core object", () => {
+    const library = createLibrary({
+      id: ids.proposal,
+      ownerId: ids.owner,
+      name: "  研究资料  ",
+      description: "  长期阅读与沉淀  ",
+      createdAt: instant,
+      createdBy: user,
+    });
+    expect(library).toMatchObject({ name: "研究资料", description: "长期阅读与沉淀", ownerId: ids.owner });
+    expect(Object.isFrozen(library)).toBe(true);
+    expect(() => createLibrary({ ...library, name: " ", createdBy: user })).toThrow("name is required");
+    expect(() => createLibrary({ ...library, createdBy: system })).toThrow("owning user Actor");
   });
 });
 
