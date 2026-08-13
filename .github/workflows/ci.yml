@@ -90,9 +90,12 @@ jobs:
         run: pnpm verify
 
       - name: Production Chromium verification
+        env:
+          XIANGXU_STAGE8_PIXEL_BASELINE_MODE: semantic-only
         run: pnpm browser:verify
 
       - name: Assert cleanup
+        if: ${{ always() }}
         shell: bash
         run: |
           set -euo pipefail

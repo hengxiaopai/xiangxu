@@ -2,7 +2,7 @@
 
 Personal AI Work OS — engineering repository bootstrap.
 
-> **Gate 4.1 Stage 9 local final audit passed. Publication authorization and exact-commit hosted CI closure remain pending.**
+> **Gate 4.1 Stage 9 publication recovery is authorized. Gate closure requires `origin/main` and successful Hosted CI to identify the same final recovery commit.**
 
 ## Current Status
 
@@ -14,7 +14,7 @@ Personal AI Work OS — engineering repository bootstrap.
 - Gate 4.1 Stages 4–6 passed TimeBlock, Capture/Proposal/Apply, and durable Outbox/BullMQ/SSE/TanStack/Offline foundations.
 - Gate 4.1 Stage 7 passed immutable Plan/Review snapshots, traceable deterministic Plan-vs-Actual, zero-fabricated actual timing, actor-scoped Today/Review, bounded `/app/today` and `/app/review` UI, production HTTP integration, two clean rebuilds, and unified verification.
 - Gate 4.1 Stage 8 passed production Chromium E2E, actor isolation, responsive Light/Dark visual baselines, keyboard/reduced-motion accessibility, real IndexedDB reload/offline/Auth Epoch safety, and unified verification.
-- Gate 4.1 Stage 9 local final audit passed clean-room frozen installation, deterministic migration generation, two clean rebuilds, unified verification, production Chromium verification, publication-set safety review, and Handoff integrity checks. Commit, push, and hosted exact-commit CI require separate publication authorization. Gate 4.2 has not started.
+- Gate 4.1 Stage 9 local final audit passed clean-room frozen installation, deterministic migration generation, two clean rebuilds, unified verification, production Chromium verification, publication-set safety review, and Handoff integrity checks. Publication was authorized; the initial hosted run passed unified verification and exposed Linux SSE-disconnect and cross-OS pixel-baseline differences, now covered by an approved bounded recovery. Gate 4.2 has not started.
 - Completed evidence: Stage 0 environment/dependency review, Stage 1 repository governance, Stage 2 workspace layering/import-boundary enforcement, Stage 3 Web/Worker runtime shells, Stage 4 Contracts/UI foundation, Stage 5 Data/Queue foundation, Stage 6 Unified Verification/CI, and Stage 7 Browser/Visual Evidence.
 - Gate 4.1 uses deterministic Review only. Real AI, Connectors, Knowledge, Scene Packs, WebGL, and full product navigation remain out of scope.
 - Stage 4 passed deterministic Contracts generation/drift detection, Light/Dark semantic tokens, minimal UI components, Web integration, and unified verification.

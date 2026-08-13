@@ -141,6 +141,7 @@ test("SSE reconnect replays missed committed events with Last-Event-ID", async (
     allowedConsole: [
       /404 \(Not Found\)/u,
       /ERR_CONNECTION_RESET/u,
+      /^Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING$/u,
       /ERR_INTERNET_DISCONNECTED/u,
       /EventSource/u,
     ],

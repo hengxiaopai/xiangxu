@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import process from "node:process";
 
 import {
   assertNoSecretSurface,
@@ -14,6 +15,11 @@ import {
 
 test.describe.configure({ mode: "serial" });
 
+const pixelBaselineMode = process.env.XIANGXU_STAGE8_PIXEL_BASELINE_MODE ?? "strict";
+if (pixelBaselineMode !== "strict" && pixelBaselineMode !== "semantic-only") {
+  throw new Error(`Unsupported XIANGXU_STAGE8_PIXEL_BASELINE_MODE: ${pixelBaselineMode}`);
+}
+
 test("22-shot responsive Light/Dark matrix establishes reviewed Fact/Proposal/Snapshot baselines", async ({ browser }) => {
   const loginContext = await newStageContext(browser, { viewport: { width: 1440, height: 900 } });
   const login = await loginContext.newPage();
@@ -24,7 +30,7 @@ test("22-shot responsive Light/Dark matrix establishes reviewed Fact/Proposal/Sn
     for (const theme of ["light", "dark"]) {
       await setTheme(login, theme);
       await assertGeometry(login, viewport);
-      await expect(login).toHaveScreenshot(`responsive/login-${viewport.width}x${viewport.height}-${theme}.png`, screenshotOptions);
+      await expectReviewedScreenshot(login, `responsive/login-${viewport.width}x${viewport.height}-${theme}.png`, screenshotOptions);
     }
   }
   loginObserved.assertClean(expect);
@@ -58,7 +64,8 @@ test("22-shot responsive Light/Dark matrix establishes reviewed Fact/Proposal/Sn
       await setTheme(today, theme);
       await assertGeometry(today, viewport);
       await assertOntologyContrast(today);
-      await expect(today).toHaveScreenshot(
+      await expectReviewedScreenshot(
+        today,
         `responsive/today-${viewport.width}x${viewport.height}-${theme}.png`,
         { ...screenshotOptions, fullPage: true },
       );
@@ -82,7 +89,8 @@ test("22-shot responsive Light/Dark matrix establishes reviewed Fact/Proposal/Sn
       await setTheme(review, theme);
       await assertGeometry(review, viewport);
       await assertOntologyContrast(review);
-      await expect(review).toHaveScreenshot(
+      await expectReviewedScreenshot(
+        review,
         `responsive/review-${viewport.width}x${viewport.height}-${theme}.png`,
         { ...screenshotOptions, fullPage: true },
       );
@@ -115,7 +123,7 @@ test("keyboard focus, roles, names, headings and focus-visible remain usable", a
   await firstTask.focus();
   await expect(firstTask).toBeFocused();
   await assertVisibleFocus(firstTask);
-  await expect(page).toHaveScreenshot("focus/today-checkbox-mobile-light.png", screenshotOptions);
+  await expectReviewedScreenshot(page, "focus/today-checkbox-mobile-light.png", screenshotOptions);
   await page.keyboard.press("Space");
   await expect(firstTask).toBeChecked();
 
@@ -135,7 +143,7 @@ test("keyboard focus, roles, names, headings and focus-visible remain usable", a
   await reviewLink.focus();
   await assertVisibleFocus(reviewLink);
   await page.evaluate(() => globalThis.scrollTo(0, 0));
-  await expect(page).toHaveScreenshot("focus/navigation-mobile-light.png", screenshotOptions);
+  await expectReviewedScreenshot(page, "focus/navigation-mobile-light.png", screenshotOptions);
   await page.keyboard.press("Enter");
   await expect(page.getByRole("heading", { level: 1, name: "每日复盘" })).toBeVisible();
   await assertHeadingOrder(page);
@@ -150,7 +158,7 @@ test("keyboard focus, roles, names, headings and focus-visible remain usable", a
   const loginButton = login.getByRole("button", { name: "建立开发会话" });
   await expect(loginButton).toBeFocused();
   await assertVisibleFocus(loginButton);
-  await expect(login).toHaveScreenshot("focus/login-button-mobile-light.png", screenshotOptions);
+  await expectReviewedScreenshot(login, "focus/login-button-mobile-light.png", screenshotOptions);
   await login.keyboard.press("Shift+Tab");
   await login.keyboard.press("Tab");
   await expect(loginButton).toBeFocused();
@@ -331,3 +339,8 @@ const screenshotOptions = {
   scale: "css",
   maxDiffPixels: 0,
 };
+
+async function expectReviewedScreenshot(page, name, options) {
+  if (pixelBaselineMode === "semantic-only") return;
+  await expect(page).toHaveScreenshot(name, options);
+}

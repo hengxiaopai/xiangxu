@@ -119,6 +119,8 @@ for (const [code, pattern, message] of [
   ["browser-host", /PLAYWRIGHT_CHROMIUM_DOWNLOAD_HOST/u, "Chromium download host override must be checked"],
   ["browser-revision", /Chrome for Testing 151\.0\.7922\.34 \(playwright chromium v1234\)/u, "Approved Chromium revision must be checked"],
   ["browser-source", /https:\/\/cdn\.playwright\.dev\/builds\/cft\/151\.0\.7922\.34\//u, "Approved Chromium source must be checked"],
+  ["hosted-pixel-mode", /^\s*XIANGXU_STAGE8_PIXEL_BASELINE_MODE:\s*semantic-only\s*$/mu, "Hosted Chromium must use semantic-only cross-platform visual verification"],
+  ["cleanup-always", /- name:\s*Assert cleanup\s*\n\s*if:\s*\$\{\{\s*always\(\)\s*\}\}\s*$/mu, "Cleanup assertion must run after earlier failures"],
   ["container-cleanup", /docker ps -aq --filter 'label=com\.docker\.compose\.project=xiangxu-stage5'/u, "container residue must be checked"],
   ["volume-cleanup", /docker volume ls -q --filter 'label=com\.docker\.compose\.project=xiangxu-stage5'/u, "volume residue must be checked"],
   ["network-cleanup", /docker network ls -q --filter 'label=com\.docker\.compose\.project=xiangxu-stage5'/u, "network residue must be checked"],

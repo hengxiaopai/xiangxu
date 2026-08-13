@@ -1,11 +1,11 @@
 # XIANGXU — Gate 4.1 Stage 9 Final Audit
 
-## Current disposition
+## Formal disposition rule
 
 ```text
-Gate 4.1 Stage 9 local final audit PASS —
-publication authorization pending.
-Gate 4.2 not started.
+Gate 4.1 Stage 9 PASS — Gate 4.1 CLOSED
+if and only if local HEAD, origin/main, and a successful GitHub Hosted CI
+head_sha identify the same final publication-recovery commit.
 ```
 
 Stage 9 began only after explicit human authorization. This phase audited the
@@ -15,17 +15,21 @@ the publication boundary. It added no product feature, public API, DTO,
 Application command/query, database object, migration, dependency, provider,
 Connector, or browser channel.
 
-No staging, commit, push, tag, release, or publication was performed. The Gate
-4.1 kickoff explicitly reserved those actions for a separate human publication
-authorization, and a hosted runner cannot prove an unpublished exact commit.
+The local audit initially performed no staging, commit, push, tag, release, or
+publication. Separate human publication authorization was later granted. The
+initial candidate was committed and pushed as
+`cc782682e15c3a89643550d6937d56e035aedd9b`; its exact hosted run exposed two
+platform-specific browser-verification gaps and correctly prevented closure.
+No tag or release was created.
 
 ## Frozen baseline and integrity
 
 | Item | Stage 9 result |
 | --- | --- |
 | branch | `main` |
-| HEAD | `a3183a026fea893b66c7b72dd65ce0f15d7fa572` |
-| staged files | 0 |
+| local-audit entry HEAD | `a3183a026fea893b66c7b72dd65ce0f15d7fa572` |
+| initial publication commit | `cc782682e15c3a89643550d6937d56e035aedd9b` |
+| initial hosted run | `31696961596`; unified verification PASS; browser verification FAIL |
 | `pnpm-lock.yaml` SHA-256 | `362266dbd547e1e1adc774425afbd3daca70bbb4e2543cf05a5ad605d8610b1e` |
 | OpenAPI SHA-256 | `87abca9aa46c4d1263f53f4591fc03ad05cde729ee0ed53cf34159803f6fc78f` |
 | migration count | 6; `0000` through `0005`; no `0006` |
@@ -61,12 +65,15 @@ Stage 9 now makes hosted CI:
    `151.0.7922.34`, the official Playwright CDN provenance, and empty host
    overrides;
 2. install only `chromium`, never all browsers and never `--with-deps`;
-3. run `pnpm browser:verify` after canonical `pnpm verify`;
-4. fail if Stage-owned networks or Playwright browser processes survive cleanup.
+3. run all browser functional, isolation, IndexedDB, SSE, responsive geometry,
+   contrast, keyboard, and reduced-motion assertions on Ubuntu while retaining
+   strict zero-difference pixel comparison on the reviewed Windows baseline;
+4. run cleanup assertions even after an earlier failure and fail if Stage-owned
+   networks or Playwright browser processes survive cleanup.
 
 The CI policy checker and its negative fixture were expanded to enforce those
 requirements. The self-test passed with the real workflow at zero violations
-and the negative fixture at one rejected workflow with 41 expected violations.
+and the negative fixture at one rejected workflow with 43 expected violations.
 
 ### Clean-room rebuild prerequisite
 
@@ -105,7 +112,7 @@ pnpm db:rebuild:smoke: PASS
   cycle 1: PostgreSQL 18.4 / migrations 6 / DB integration 52 of 52 / sentinel 0
   cycle 2: PostgreSQL 18.4 / migrations 6 / DB integration 52 of 52 / sentinel 0
 
-pnpm ci:check: PASS, real 0 / negative 1 / 41 expected violations
+pnpm ci:check: PASS, real 0 / negative 1 / 43 expected violations
 pnpm lint: PASS
 pnpm typecheck: PASS, 8 of 8 workspaces
 pnpm boundary: PASS, 8 workspaces / 114 source files / 7 edges
@@ -129,10 +136,56 @@ No compiler option, lint rule, boundary rule, contract drift check, token
 boundary, database assertion, browser assertion, security invariant, or cleanup
 requirement was removed or weakened.
 
+## Hosted publication recovery
+
+The first exact-commit hosted run `31696961596` targeted initial publication
+commit `cc782682e15c3a89643550d6937d56e035aedd9b`. Checkout, exact Node/pnpm,
+frozen installation, lifecycle policy, Docker, Chromium provenance and install,
+and canonical `pnpm verify` all passed. Production Chromium then failed on:
+
+1. Chrome on Linux reporting `ERR_INCOMPLETE_CHUNKED_ENCODING` while the test
+   intentionally restarted Next.js to prove SSE replay; and
+2. Ubuntu font rasterization differing from reviewed Windows PNGs while the
+   test still enforced `maxDiffPixels: 0`.
+
+Human Recovery authorization approved only these bounded changes:
+
+- allow the exact incomplete-chunk diagnostic only in the intentional SSE
+  restart test;
+- keep local reviewed Windows PNG comparison strict and unchanged;
+- use `semantic-only` on the Ubuntu Hosted Runner while still running all nine
+  browser scenarios and all non-pixel visual/accessibility assertions;
+- require the hosted cleanup assertion to run with `always()`.
+
+Local recovery evidence:
+
+```text
+CI policy self-test: PASS, real 0 / negative 1 / 43 expected violations
+targeted ESLint: PASS
+Hosted-equivalent semantic-only browser verification: PASS, 9 / 9
+Windows strict visual baseline verification: PASS, 2 / 2 tests / 25 PNGs
+pnpm verify: PASS, including PostgreSQL 18.4 DB integration 52 / 52,
+  Redis 8.2.8, BullMQ, production HTTP, and cleanup
+reviewed PNG modifications: 0
+```
+
+An all-nine strict Windows invocation reached Playwright status `passed`, but
+its outer tool task hit the 90-second limit during final return. It was treated
+as inconclusive, all process/container/network residue was audited as zero, its
+generated result directory was removed, and the smaller isolated strict visual
+batch above completed with an explicit exit-zero result.
+
+The first local recovery `pnpm verify` reached only infrastructure startup and
+failed closed because an unrelated Docker/WSL Redis relay already owned host
+port 6379. Stage-owned resources were automatically removed. The complete
+command then passed with the already reviewed local fallback
+`XIANGXU_STAGE5_REDIS_TEST_PORT=56379`; the unrelated host process was neither
+stopped nor modified.
+
 ## Publication-set review
 
-The candidate contains the complete accumulated Gate 4.1 Stage 0–9 work and no
-staged files. The final publication candidate contains 197 files totaling
+The initial candidate contains the complete accumulated Gate 4.1 Stage 0–9
+work. It contained 197 files totaling
 2,578,782 bytes: 48 modified tracked files and 149 untracked files. Review
 covered dependency exactness, lifecycle policy, environment files, credential
 patterns, generated artifacts, migrations, OpenAPI, screenshots, and
@@ -150,28 +203,21 @@ container, volume, or network is part of the candidate.
 
 ## Publication checkpoint
 
-Stage 9 local audit is complete, but formal Gate closure remains fail-closed:
+Final publication authorization and the initial candidate publication are
+complete. Because the initial exact run failed, it does not close the Gate. The
+approved recovery closes Gate 4.1 only after all of these conditions pass:
 
 ```text
-1. obtain explicit Gate 4.1 final publication authorization;
-2. stage the reviewed candidate and confirm the exact staged file set;
-3. create one intentional Gate 4.1 commit;
-4. push that exact commit to origin/main;
-5. require successful GitHub Hosted Runner CI with head_sha equal to that commit;
-6. verify origin/main and the hosted run still identify the exact same commit.
+1. commit and push only the reviewed bounded recovery to main;
+2. require successful GitHub Hosted Runner CI for that exact recovery head_sha;
+3. verify local HEAD, origin/main, remote refs/heads/main, and hosted head_sha
+   all identify that same commit;
+4. verify the final local worktree is clean and Handoff remains 32 / 32.
 ```
 
-Only after all six steps pass may the repository state become:
+When those conditions are true, the formal repository state is:
 
 ```text
 Gate 4.1 Stage 9 PASS — Gate 4.1 CLOSED.
-Gate 4.2 may start under its own explicit product-development scope.
-```
-
-Current truthful state:
-
-```text
-Gate 4.1 Stage 9 local final audit PASS —
-publication authorization pending.
-Gate 4.2 not started.
+Gate 4.2 may start under its already approved product-development direction.
 ```
