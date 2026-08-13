@@ -1,4 +1,5 @@
 import { migrateDatabase, smokeDatabase, waitForStableDatabase } from "./database.mjs";
+import { runDatabaseIntegrationTests } from "./integration.mjs";
 import {
   composeDownWithVolumes,
   composeUp,
@@ -13,9 +14,10 @@ const cycles = [];
 try {
   composeDownWithVolumes(context);
   for (const cycle of [1, 2]) {
-    composeUp(context, ["postgres"]);
+    composeUp(context);
     await waitForStableDatabase(context.databaseUrl);
     await migrateDatabase(context.databaseUrl);
+    runDatabaseIntegrationTests(context.databaseUrl, context.redisUrl);
     cycles.push({ cycle, ...(await smokeDatabase(context.databaseUrl)) });
     composeDownWithVolumes(context);
   }

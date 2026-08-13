@@ -92,6 +92,9 @@ forbid("shell-installer", /curl\b[^\n|]*\|\s*(?:ba)?sh|wget\b[^\n|]*\|\s*(?:ba)?
 forbid("npm-install", /\bnpm\s+(?:install|ci)\b/giu, "npm install commands are forbidden");
 forbid("install-policy", /pnpm\s+(?:update|install\s+--no-frozen-lockfile)\b/giu, "Non-frozen pnpm install policy is forbidden");
 forbid("skip-infrastructure", /\b(?:SKIP_DB|SKIP_REDIS|SKIP_INFRA|CI_FAST_MODE)\b/gu, "Infrastructure verification cannot be skipped");
+forbid("browser-install-all", /^\s*run:\s*pnpm exec playwright install\s*$/gmu, "Browser installation must name Chromium only");
+forbid("browser-with-deps", /pnpm exec playwright install\s+--with-deps\b/gu, "Browser installation cannot expand into OS dependency installation");
+forbid("unapproved-browser", /pnpm exec playwright install\s+(?:chrome|msedge|firefox|webkit)\b/gu, "Only bundled Chromium is approved");
 
 for (const [code, pattern, message] of [
   ["push-main", /^\s*push:\s*\n\s{4}branches:\s*\n\s{6}-\s*main\s*$/mu, "push must target main"],
@@ -112,17 +115,32 @@ for (const [code, pattern, message] of [
   ["lifecycle-assertion", /pnpm ignored-builds/u, "post-install lifecycle status must be checked"],
   ["docker-version", /^\s*docker version\s*$/mu, "Docker daemon diagnostics are required"],
   ["compose-version", /^\s*docker compose version\s*$/mu, "Docker Compose diagnostics are required"],
+  ["playwright-version", /test "\$\(pnpm exec playwright --version\)" = "Version 1\.62\.0"/u, "Playwright version must fail closed"],
+  ["browser-host", /PLAYWRIGHT_CHROMIUM_DOWNLOAD_HOST/u, "Chromium download host override must be checked"],
+  ["browser-revision", /Chrome for Testing 151\.0\.7922\.34 \(playwright chromium v1234\)/u, "Approved Chromium revision must be checked"],
+  ["browser-source", /https:\/\/cdn\.playwright\.dev\/builds\/cft\/151\.0\.7922\.34\//u, "Approved Chromium source must be checked"],
   ["container-cleanup", /docker ps -aq --filter 'label=com\.docker\.compose\.project=xiangxu-stage5'/u, "container residue must be checked"],
   ["volume-cleanup", /docker volume ls -q --filter 'label=com\.docker\.compose\.project=xiangxu-stage5'/u, "volume residue must be checked"],
+  ["network-cleanup", /docker network ls -q --filter 'label=com\.docker\.compose\.project=xiangxu-stage5'/u, "network residue must be checked"],
+  ["browser-cleanup", /residual_browsers=/u, "Playwright browser residue must be checked"],
 ]) requireMatch(code, pattern, message);
 
 const installMatches = [...semanticSource.matchAll(/^\s*run:\s*pnpm install --frozen-lockfile\s*$/gmu)];
 if (installMatches.length !== 1) add("canonical-install", `Expected one exact frozen install command; found ${installMatches.length}`);
 const verifyMatches = [...semanticSource.matchAll(/^\s*run:\s*pnpm verify\s*$/gmu)];
 if (verifyMatches.length !== 1) add("canonical-verify", `Expected one exact pnpm verify command; found ${verifyMatches.length}`);
+const browserInstallMatches = [...semanticSource.matchAll(/^\s*run:\s*pnpm exec playwright install chromium\s*$/gmu)];
+if (browserInstallMatches.length !== 1) add("canonical-browser-install", `Expected one exact bundled Chromium install command; found ${browserInstallMatches.length}`);
+const browserVerifyMatches = [...semanticSource.matchAll(/^\s*run:\s*pnpm browser:verify\s*$/gmu)];
+if (browserVerifyMatches.length !== 1) add("canonical-browser-verify", `Expected one exact browser verification command; found ${browserVerifyMatches.length}`);
 const freshIndex = semanticSource.indexOf("test ! -e node_modules");
 const installIndex = semanticSource.indexOf("run: pnpm install --frozen-lockfile");
 if (freshIndex < 0 || installIndex < 0 || freshIndex > installIndex) add("fresh-before-install", "Fresh workspace assertion must precede install");
+const browserInstallIndex = semanticSource.indexOf("run: pnpm exec playwright install chromium");
+const verifyIndex = semanticSource.indexOf("run: pnpm verify");
+const browserVerifyIndex = semanticSource.indexOf("run: pnpm browser:verify");
+if (browserInstallIndex < installIndex) add("browser-after-install", "Chromium installation must follow the frozen dependency installation");
+if (verifyIndex < browserInstallIndex || browserVerifyIndex < verifyIndex) add("browser-verification-order", "Chromium install, unified verification, and browser verification must run in order");
 
 const report = {
   ok: violations.length === 0,

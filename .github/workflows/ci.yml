@@ -71,8 +71,26 @@ jobs:
           docker version
           docker compose version
 
+      - name: Assert Playwright Chromium provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${PLAYWRIGHT_DOWNLOAD_HOST:-}"
+          test -z "${PLAYWRIGHT_CHROMIUM_DOWNLOAD_HOST:-}"
+          test "$(pnpm exec playwright --version)" = "Version 1.62.0"
+          provenance="$(pnpm exec playwright install --dry-run chromium)"
+          printf '%s\n' "$provenance"
+          grep -F 'Chrome for Testing 151.0.7922.34 (playwright chromium v1234)' <<< "$provenance"
+          grep -F 'https://cdn.playwright.dev/builds/cft/151.0.7922.34/' <<< "$provenance"
+
+      - name: Install approved bundled Chromium
+        run: pnpm exec playwright install chromium
+
       - name: Unified verification
         run: pnpm verify
+
+      - name: Production Chromium verification
+        run: pnpm browser:verify
 
       - name: Assert cleanup
         shell: bash
@@ -80,20 +98,26 @@ jobs:
           set -euo pipefail
           containers="$(docker ps -aq --filter 'label=com.docker.compose.project=xiangxu-stage5')"
           volumes="$(docker volume ls -q --filter 'label=com.docker.compose.project=xiangxu-stage5')"
+          networks="$(docker network ls -q --filter 'label=com.docker.compose.project=xiangxu-stage5')"
           residual_workers="$(ps -eo pid=,comm=,args= | awk '$2 == "node" && /(apps\/worker|packages\/infrastructure\/scripts)/ {print}')"
+          residual_browsers="$(ps -eo pid=,comm=,args= | awk '/ms-playwright/ && $2 ~ /^(chrome|chromium|chrome-headless-shell)$/ {print}')"
           test -z "$containers"
           test -z "$volumes"
+          test -z "$networks"
           test -z "$residual_workers"
+          test -z "$residual_browsers"
 
       - name: Write job summary
         shell: bash
         run: |
           set -euo pipefail
           {
-            echo '## XIANGXU Gate 4.0 verification'
+            echo '## XIANGXU Gate 4.1 verification'
             echo ''
             echo '- Node: `v24.19.0`'
             echo '- pnpm: `11.21.0`'
             echo "- Lockfile: \`$LOCKFILE_SHA256_AFTER\`"
             echo '- `pnpm verify`: PASS'
+            echo '- Playwright Chromium `v1234`: PASS'
+            echo '- `pnpm browser:verify`: PASS'
           } >> "$GITHUB_STEP_SUMMARY"

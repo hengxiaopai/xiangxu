@@ -72,7 +72,7 @@ export async function smokeDatabase(databaseUrl) {
     const historyCount = await pool.query(
       `SELECT COUNT(*)::integer AS count FROM "${historySchema}"."__drizzle_migrations"`,
     );
-    assert.equal(historyCount.rows[0]?.count, 1);
+    assert.equal(historyCount.rows[0]?.count, 6);
 
     const client = await pool.connect();
     try {

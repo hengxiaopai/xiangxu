@@ -1,7 +1,7 @@
 {
   "$schema": "./boundary-matrix.schema.json",
   "schemaVersion": 1,
-  "stage": "Gate 4.0 / Stage 5",
+  "stage": "Gate 4.1 / Stage 1",
   "namespace": "@xiangxu/",
   "packages": {
     "@xiangxu/domain": {
@@ -11,6 +11,9 @@
         "@xiangxu/contracts": "type-only"
       },
       "allowedExternalDependencies": []
+      ,"sourceScopedExternalDependencies": [
+        { "specifier": "vitest", "include": ["src/**/*.test.ts"] }
+      ]
     },
     "@xiangxu/application": {
       "path": "packages/application",
@@ -20,15 +23,20 @@
         "@xiangxu/contracts": "runtime"
       },
       "allowedExternalDependencies": []
+      ,"sourceScopedExternalDependencies": [
+        { "specifier": "vitest", "include": ["src/**/*.test.ts"] }
+      ]
     },
     "@xiangxu/infrastructure": {
       "path": "packages/infrastructure",
       "kind": "production",
       "allowedWorkspaceDependencies": {
         "@xiangxu/application": "runtime",
-        "@xiangxu/contracts": "runtime"
+        "@xiangxu/contracts": "runtime",
+        "@xiangxu/domain": "runtime"
       },
       "allowedExternalDependencies": [
+        "@types/pg",
         "bullmq",
         "drizzle-kit",
         "drizzle-orm",
@@ -36,6 +44,9 @@
         "ioredis",
         "node:*",
         "pg"
+      ],
+      "sourceScopedExternalDependencies": [
+        { "specifier": "vitest", "include": ["src/**/*.integration.test.ts"] }
       ],
       "additionalSourceInputs": [
         "drizzle.config.ts",
@@ -49,6 +60,9 @@
         "scripts/queue.mjs",
         "scripts/queue-smoke.mjs",
         "scripts/infra-smoke.mjs",
+        "scripts/integration.mjs",
+        "scripts/http-integration.mjs",
+        "scripts/stage3-http-smoke.mjs",
         "scripts/db-rebuild-smoke.mjs"
       ]
     },
@@ -58,6 +72,9 @@
       "allowedWorkspaceDependencies": {},
       "allowedExternalDependencies": [
         "zod"
+      ],
+      "sourceScopedExternalDependencies": [
+        { "specifier": "vitest", "include": ["src/**/*.test.ts"] }
       ]
     },
     "@xiangxu/ui": {
@@ -94,13 +111,30 @@
         "@xiangxu/contracts": "runtime",
         "@xiangxu/ui": "runtime"
       },
+      "sourceScopedWorkspaceDependencies": [
+        {
+          "target": "@xiangxu/infrastructure",
+          "permission": "runtime",
+          "include": ["src/server/composition/**"],
+          "forbidClientReachability": true
+        }
+      ],
+      "sourceScopedExternalDependencies": [
+        {
+          "specifier": "node:*",
+          "include": ["src/server/**"],
+          "forbidClientReachability": true
+        }
+      ],
       "allowedExternalDependencies": [
+        "@tanstack/react-query",
         "next",
         "next/*",
         "react",
         "react/*",
         "react-dom",
         "react-dom/*",
+        "uuid",
         "@types/node",
         "@types/react",
         "@types/react-dom"

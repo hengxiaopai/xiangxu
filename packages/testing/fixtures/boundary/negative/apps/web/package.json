@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@xiangxu/infrastructure": "workspace:*",
     "bullmq": "6.0.10",
     "pg": "8.23.0"
   }

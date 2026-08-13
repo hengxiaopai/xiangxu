@@ -124,13 +124,47 @@ function externalAllowed(specifier, allowed) {
   return allowed.some((entry) => entry === specifier || (entry.endsWith("*") && specifier.startsWith(entry.slice(0, -1))));
 }
 
+function sourcePathMatches(file, pattern) {
+  const normalizedFile = file.split(path.sep).join("/");
+  if (pattern.endsWith("/**")) return normalizedFile.startsWith(pattern.slice(0, -3));
+  const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&");
+  const expression = escaped.replaceAll("**/", "(?:.*/)?").replaceAll("**", ".*").replaceAll("*", "[^/]*");
+  return new RegExp(`^${expression}$`).test(normalizedFile);
+}
+
+function scopedExternalAllowed(source, specifier, relativeFile) {
+  return (source.policy.sourceScopedExternalDependencies ?? []).some(
+    (rule) => externalAllowed(specifier, [rule.specifier]) && rule.include.some((pattern) => sourcePathMatches(relativeFile, pattern)),
+  );
+}
+
+function scopedRulesFor(source, targetName) {
+  return (source.policy.sourceScopedWorkspaceDependencies ?? []).filter((rule) => rule.target === targetName);
+}
+
+function scopedRuleForFile(source, targetName, relativeFile) {
+  return scopedRulesFor(source, targetName).find((rule) => rule.include.some((pattern) => sourcePathMatches(relativeFile, pattern)));
+}
+
+function hasUseClientDirective(source) {
+  return /^\s*["']use client["']\s*;/.test(source);
+}
+
+function resolveRelativeSource(file, specifier, sourceFiles) {
+  const base = path.resolve(path.dirname(file), specifier);
+  const candidates = [base];
+  for (const extension of sourceExtensions) candidates.push(`${base}${extension}`);
+  for (const extension of sourceExtensions) candidates.push(path.join(base, `index${extension}`));
+  return candidates.find((candidate) => sourceFiles.has(path.normalize(candidate))) ?? null;
+}
+
 function addViolation(violations, code, record, details) {
   violations.push({ code, package: record?.name ?? null, ...details });
 }
 
 function checkManifestEdge(violations, source, targetName, details) {
   const permission = source.policy.allowedWorkspaceDependencies[targetName];
-  if (!permission) {
+  if (!permission && scopedRulesFor(source, targetName).length === 0) {
     addViolation(violations, "forbidden-workspace-dependency", source, {
       ...details,
       target: targetName,
@@ -139,10 +173,18 @@ function checkManifestEdge(violations, source, targetName, details) {
   }
 }
 
-function checkSourceEdge(violations, source, targetName, typeOnly, details) {
-  const permission = source.policy.allowedWorkspaceDependencies[targetName];
+function checkSourceEdge(violations, source, targetName, typeOnly, relativeFile, details) {
+  const directPermission = source.policy.allowedWorkspaceDependencies[targetName];
+  const scopedRule = scopedRuleForFile(source, targetName, relativeFile);
+  const permission = directPermission ?? scopedRule?.permission;
   if (!permission) {
-    checkManifestEdge(violations, source, targetName, details);
+    if (scopedRulesFor(source, targetName).length > 0) {
+      addViolation(violations, "source-scoped-workspace-import", source, {
+        ...details,
+        target: targetName,
+        message: `${source.name} may import ${targetName} only from an approved source scope`,
+      });
+    } else checkManifestEdge(violations, source, targetName, details);
   } else if (permission === "type-only" && !typeOnly) {
     addViolation(violations, "runtime-import-on-type-only-edge", source, {
       ...details,
@@ -281,13 +323,21 @@ async function main() {
       }
     }
 
-    for (const file of sourceInputs) {
+    const normalizedSourceInputs = [...new Set(sourceInputs.map((file) => path.normalize(file)))];
+    const sourceFileSet = new Set(normalizedSourceInputs);
+    const relativeImportGraph = new Map(normalizedSourceInputs.map((file) => [file, new Set()]));
+    const clientEntries = new Set();
+
+    for (const file of normalizedSourceInputs) {
       filesScanned += 1;
       const source = await fs.readFile(file, "utf8");
+      if (hasUseClientDirective(source)) clientEntries.add(file);
       for (const imported of collectImports(source, file)) {
         const location = `${path.relative(root, file)}:${imported.line}`;
         if (imported.specifier.startsWith(".")) {
           const resolved = path.resolve(path.dirname(file), imported.specifier);
+          const relativeTarget = resolveRelativeSource(file, imported.specifier, sourceFileSet);
+          if (relativeTarget) relativeImportGraph.get(file)?.add(relativeTarget);
           const targetRecord = records.find((candidate) => candidate.name !== record.name && isInside(resolved, candidate.root));
           if (targetRecord && matrix.rules.forbidCrossPackageRelativeImports) {
             addViolation(violations, "cross-package-relative-import", record, {
@@ -316,7 +366,7 @@ async function main() {
               message: `Cross-package import must use public entry point ${targetName}`,
             });
           }
-          checkSourceEdge(violations, record, targetName, imported.typeOnly, {
+          checkSourceEdge(violations, record, targetName, imported.typeOnly, path.relative(record.root, file), {
             file: location,
             specifier: imported.specifier,
           });
@@ -328,13 +378,44 @@ async function main() {
               message: `${targetName} is imported but absent from all dependency sections`,
             });
           }
-        } else if (!targetName && !externalAllowed(imported.specifier, record.policy.allowedExternalDependencies)) {
+        } else if (
+          !targetName &&
+          !externalAllowed(imported.specifier, record.policy.allowedExternalDependencies) &&
+          !scopedExternalAllowed(record, imported.specifier, path.relative(record.root, file))
+        ) {
           addViolation(violations, "external-import-not-allowed", record, {
             file: location,
             specifier: imported.specifier,
-            message: `${imported.specifier} is not approved for ${record.name} in Stage 2`,
+            message: `${imported.specifier} is not approved for ${record.name} in ${matrix.stage}`,
           });
         }
+      }
+    }
+
+    const clientForbiddenRules = (record.policy.sourceScopedWorkspaceDependencies ?? []).filter(
+      (rule) => rule.forbidClientReachability,
+    );
+    for (const clientEntry of clientEntries) {
+      const visited = new Set();
+      const pending = [clientEntry];
+      while (pending.length > 0) {
+        const current = pending.pop();
+        if (!current || visited.has(current)) continue;
+        visited.add(current);
+        const relativeCurrent = path.relative(record.root, current);
+        const matchedRule = clientForbiddenRules.find((rule) =>
+          rule.include.some((pattern) => sourcePathMatches(relativeCurrent, pattern)),
+        );
+        if (matchedRule) {
+          addViolation(violations, "client-reaches-server-composition", record, {
+            file: path.relative(root, clientEntry),
+            target: matchedRule.target,
+            reached: path.relative(root, current),
+            message: `Client dependency chain reaches server-only composition source ${path.relative(root, current)}`,
+          });
+          break;
+        }
+        pending.push(...(relativeImportGraph.get(current) ?? []));
       }
     }
   }

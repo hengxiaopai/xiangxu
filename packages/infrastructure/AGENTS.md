@@ -2,8 +2,8 @@
 
 - Implement reviewed Application ports and use Contracts only through public entry points.
 - Do not define Domain meaning or become a dependency of Domain/Application.
-- Stage 5 permits only the PostgreSQL/Drizzle bootstrap sentinel and Redis/BullMQ fake infrastructure smoke.
-- Stage 5 is complete; do not expand the sentinel or fake queue into business persistence or workflow without an explicitly approved later Stage.
-- Keep database and queue smoke free of Domain entities, business tables, real jobs, providers, and external side effects.
+- Gate 4.1 Stages 2–7 own only the reviewed persistence adapters, transaction-bound repositories, additive migrations, durable dispatcher/BullMQ adapter, and actor-scoped PostgreSQL SSE adapter for the active slice.
+- Stage 6 permits `capture.triage.requested`, migration 0004, claim/lease/retry dispatch, and SSE-eligible event reads. Do not implement Application business policy, API routes, providers, Redis Pub/Sub, Review tables, or direct Worker business mutation.
+- Stage 7 permits migration 0005 and append/read repositories for PlanSnapshot/ReviewSnapshot plus read-only ExecutionRecord access. Do not add snapshot updates/deletes, ExecutionRecord writers, dashboard/today tables, new event topics, or Stage 8 browser infrastructure.
 - Destructive operations must fail closed on the fixed `xiangxu-stage5` project, local endpoints, and project-owned volume/queue identities.
 - Cross-package imports must be declared and boundary-checked.

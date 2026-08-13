@@ -1,4 +1,5 @@
 .xx-button {
+  appearance: none;
   min-height: var(--xx-control-height-md);
   border: var(--xx-button-border-width) solid transparent;
   border-radius: var(--xx-button-radius);

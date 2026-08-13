@@ -1,0 +1,608 @@
+{
+  "schemaVersion": 1,
+  "gate": "Gate 4.1 / Stage 0",
+  "candidateLockSha256": "68c2132a6db9d40cad6a176d64a6dafa03d41cb56c873cd1779359fe154fcd10",
+  "finalLockSha256": "820eeafe0719ee3bfc59b3c274a4057a0cf5093d604192107fb1b86985808a19",
+  "records": [
+    {
+      "name": "@rolldown/binding-android-arm64",
+      "version": "1.2.3",
+      "os": [
+        "android"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-android-arm64/-/binding-android-arm64-1.2.3.tgz",
+      "integrity": "sha512-zrJtHDcaZJ1Fp7xf4hNl+7seH9Cn/N5TwLYkhgXREtBwAd/jaqW3uqeHxpDugJLVICWg4eW44kOQEGJ1r6jCGw==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-darwin-arm64",
+      "version": "1.2.3",
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.2.3.tgz",
+      "integrity": "sha512-ieIiibVCp0tX7TLu2cafoNPv8wJyYi01ekXpbf8q2j7F4rGAhhXb/eQh7ge9DRBY78GwmRQtvjZDux7EDbA8kA==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-darwin-x64",
+      "version": "1.2.3",
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-darwin-x64/-/binding-darwin-x64-1.2.3.tgz",
+      "integrity": "sha512-Zh9tCon19eDXJoihx0rqKhMUlMYqzwj3aPsSuHmI4RWZh62dWUL+DJN4C5YQya5TcQBJU/Fe8+rY0jhXTQITqA==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-freebsd-x64",
+      "version": "1.2.3",
+      "os": [
+        "freebsd"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-freebsd-x64/-/binding-freebsd-x64-1.2.3.tgz",
+      "integrity": "sha512-nGbJWewA1wrXXZiQhjAT5rhibGfns5ZNkDVqxsO6zJ3f3YvpoDNNmGMSbbhLuXKjNScaBJVOAboztAWVespQMg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-linux-arm64-gnu",
+      "version": "1.2.3",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-gnu/-/binding-linux-arm64-gnu-1.2.3.tgz",
+      "integrity": "sha512-TkqEAcmmvH3I/q4114NB4RVt6241Dao48pF45uLcFGrwAaIn0iITgTAKP/dLjbN0R4buJjGb91+UHSoFmpgIWw==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-linux-arm64-musl",
+      "version": "1.2.3",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        "musl"
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-musl/-/binding-linux-arm64-musl-1.2.3.tgz",
+      "integrity": "sha512-NHqjnxpsndf4MPymxteFAWHHfkTL8HjWh1KB7z23ofZ6QO2euONuxDXjat69dKZRALnGypg8k8SsK8vZJoXv1Q==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "version": "1.2.3",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-linux-arm-gnueabihf/-/binding-linux-arm-gnueabihf-1.2.3.tgz",
+      "integrity": "sha512-QNniJr5Kml0kDEB98jiDOJjXNroxIIi0IXIbdYzY26Xt1pVbeP62+KnoIZLwirOymX/0jDk/2gI/bNUv7A7OIw==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-linux-ppc64-gnu",
+      "version": "1.2.3",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "ppc64"
+      ],
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-linux-ppc64-gnu/-/binding-linux-ppc64-gnu-1.2.3.tgz",
+      "integrity": "sha512-6tbrbwfz5GB9DQ4Jwo6hy9v+vR31xZlvzZ6n5Xut6Hhx5PvrA9q/HsK8KMaYQp063iqZGXwNvZtYNLD7EM/x0w==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-linux-s390x-gnu",
+      "version": "1.2.3",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "s390x"
+      ],
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-linux-s390x-gnu/-/binding-linux-s390x-gnu-1.2.3.tgz",
+      "integrity": "sha512-oyuXxXmoZHjXC917IAPFAAv4wWAa0cM9afk8nx1+9/jNNOX1uPf8yDA6p7G0RypOfw/X0PQt5IfoquY1um+zSg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.3",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.3.tgz",
+      "integrity": "sha512-TytMwF2KVGqP2tgd0I1OY0PAv78dZRAYcF5ssDzjM34SUXCED3uXvSd5+lHoC0bTD6eEdFz7LdQNCO1y0oVk9w==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-musl",
+      "version": "1.2.3",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        "musl"
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-linux-x64-musl/-/binding-linux-x64-musl-1.2.3.tgz",
+      "integrity": "sha512-/E9m3qstrJFVPoULV25mVQblSNExY2+kBsYe4sy0Tn0yOOgJ8wZbZt3KnRbF/XeU2Gl1STKUQnDNTqhIE5MD4A==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-openharmony-arm64",
+      "version": "1.2.3",
+      "os": [
+        "openharmony"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-openharmony-arm64/-/binding-openharmony-arm64-1.2.3.tgz",
+      "integrity": "sha512-Kr0OcsoQI816i6HOl3vFHpd1K0eZyh76zgfj4c1nTyaTsd5r2Mj1lwM4R90y/qaCfmTn9eHy0SKwi98eitRxug==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-win32-arm64-msvc",
+      "version": "1.2.3",
+      "os": [
+        "win32"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-win32-arm64-msvc/-/binding-win32-arm64-msvc-1.2.3.tgz",
+      "integrity": "sha512-hOtMwTqnME+/gJcH/PCZ0wn0zPUjiWOgkHpxbSJpfGKMezHltx1S7/k1SitzVa7Ww2cqrDDaFbZEhcJZO8o+Jw==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.3",
+      "os": [
+        "win32"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MIT",
+      "parent": "rolldown@1.2.3",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/@rolldown/binding-win32-x64-msvc/-/binding-win32-x64-msvc-1.2.3.tgz",
+      "integrity": "sha512-ekcqMMkI2PlhYnfzQnB/cEdYUVVJViWvoUyLrbzgDoi3Snfc1mVBwdnc306ufA5ejy8JSPjT2RlW1nQSjW7efg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-android-arm64",
+      "version": "1.33.0",
+      "os": [
+        "android"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-android-arm64/-/lightningcss-android-arm64-1.33.0.tgz",
+      "integrity": "sha512-gEpRTalKdosp4Bb8qWtc2iOgE5SeIHlpS1up9bFq2wAyYhl1UdTObYiHe98zEM9SQvSoqQZ1IQD0JNpg3Ml5pg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-darwin-arm64",
+      "version": "1.33.0",
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.33.0.tgz",
+      "integrity": "sha512-Sciaz8eenNTKn9b3t7+xr0ipTp9YxKQY4npwQ3mrRuL0BAVHBLyZxofhaKBAVtzmtRZ/zTyo0/to4B1uWG/Djg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-darwin-x64",
+      "version": "1.33.0",
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-darwin-x64/-/lightningcss-darwin-x64-1.33.0.tgz",
+      "integrity": "sha512-Z5UPAxzrjlWNNyGy6i65cJzzvgJ5D3T6wMvs+gWpY9d7qRhANrxqAp6LhxIgZhWEw18RfJTGcRxjuLIBr+m8XQ==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-freebsd-x64",
+      "version": "1.33.0",
+      "os": [
+        "freebsd"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-freebsd-x64/-/lightningcss-freebsd-x64-1.33.0.tgz",
+      "integrity": "sha512-QQM/Ti/hQajJwCY+RiWuCZ9sdtI/XQk7nDK5vC8kkdwixezOlDgvDx7+RT+QjK6FcFT4MpsuoBnHIo/O3StRRg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-linux-arm64-gnu",
+      "version": "1.33.0",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        "glibc"
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-linux-arm64-gnu/-/lightningcss-linux-arm64-gnu-1.33.0.tgz",
+      "integrity": "sha512-j2v/itmy4HlNxlc6voKXYgBqNi0Ng2LShg4z7GufpEgs05P+2suBVyi9I6YHq5uoVFx9ETin3eCEhLVyXGQnKg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-linux-arm64-musl",
+      "version": "1.33.0",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        "musl"
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-linux-arm64-musl/-/lightningcss-linux-arm64-musl-1.33.0.tgz",
+      "integrity": "sha512-yiO5ROMuYQgXbC60yjZU5CYSFZGKXL0HFATXt9mHJn1+zW55oCtMI9NfcVhYLMFDL7gV7oBPon/EmMMGg2OvtQ==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-linux-arm-gnueabihf",
+      "version": "1.33.0",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-linux-arm-gnueabihf/-/lightningcss-linux-arm-gnueabihf-1.33.0.tgz",
+      "integrity": "sha512-N7FVBe6iS24MlM6R/4RBTxGhQheZGs7tiQ9U32UtF75NzP5Q7xWPRqLBCKxlRQRk3rY1jCIPLzx7WzOhuUIRLQ==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-linux-x64-gnu",
+      "version": "1.33.0",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        "glibc"
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.33.0.tgz",
+      "integrity": "sha512-ar+Ju7LmcN0Jo4FpL4hpFybwNG9/3A/Br5KW2n2jyODg3MEZXaDYADdemoNS+BDNfMgKvylJLj4S5tyRActuAg==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-linux-x64-musl",
+      "version": "1.33.0",
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        "musl"
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.33.0.tgz",
+      "integrity": "sha512-RYiYbkokw0trfKqqzfF55lginwEPrD3OJDfTuJzFs1MK6iFnDenaz1fqLLtX4ITG3OktJQXOeTaw1awrBAlZPw==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-win32-arm64-msvc",
+      "version": "1.33.0",
+      "os": [
+        "win32"
+      ],
+      "cpu": [
+        "arm64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-win32-arm64-msvc/-/lightningcss-win32-arm64-msvc-1.33.0.tgz",
+      "integrity": "sha512-1K+MPfLSFVpphzpdbfkhlWk6wBrTObBzS2T6db10PNOZgR9GoVsAWzwNyuhUYYbTp23j+4RrncfujZ4uAzXvwA==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    },
+    {
+      "name": "lightningcss-win32-x64-msvc",
+      "version": "1.33.0",
+      "os": [
+        "win32"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "libc": [
+        null
+      ],
+      "license": "MPL-2.0",
+      "parent": "lightningcss@1.33.0",
+      "registry": "https://registry.npmjs.org/",
+      "tarball": "https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.33.0.tgz",
+      "integrity": "sha512-OlEICDx/Xl0FqSp4bry8zFnCvGpig3Gl4gCquvYwHuqJKEC1+n9NgDniFvqHGmMv1ZkqDJrDqKKSykTDX+ehuA==",
+      "scripts": {
+        "preinstall": null,
+        "install": null,
+        "postinstall": null
+      },
+      "requiresBuild": false
+    }
+  ]
+}

@@ -8,6 +8,41 @@
       "when": 1786463497894,
       "tag": "0000_motionless_bloodaxe",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786549034964,
+      "tag": "0001_noisy_ravenous",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786586234986,
+      "tag": "0002_spotty_mindworm",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786589858406,
+      "tag": "0003_mean_argent",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786593851475,
+      "tag": "0004_normal_sabra",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786597377345,
+      "tag": "0005_empty_whirlwind",
+      "breakpoints": true
     }
   ]
 }

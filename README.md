@@ -2,20 +2,26 @@
 
 Personal AI Work OS — engineering repository bootstrap.
 
-> **Gate 4.0 engineering bootstrap only. No production business workflow implemented.**
+> **Gate 4.1 Stage 9 local final audit passed. Publication authorization and exact-commit hosted CI closure remain pending.**
 
 ## Current Status
 
-- Current Gate: Gate 4.0.
+- Current Gate: Gate 4.1 — Daily Loop Vertical Slice.
+- Gate 4.1 Stage 0 passed dependency/native/lifecycle review, revision/HTTP contract clarification, Playwright Chromium dry-run provenance, path-aware Web server-composition boundaries, frozen installation, native tooling smoke, and unified verification.
+- Gate 4.1 Stage 1 passed Contracts + Pure Domain freeze, real Vitest coverage, deterministic OpenAPI, boundary enforcement, and unified verification.
+- Gate 4.1 Stage 2 passed additive migration 0001, real PostgreSQL CAS/concurrency/transaction/idempotency integration tests, two fresh rebuild cycles, and unified verification.
+- Gate 4.1 Stage 3 passed production-profile fail-closed Dev Session, server-resolved Actor, transactional Task HTTP runtime, ETag/If-Match CAS, idempotent replay/concurrency/conflict, cross-actor isolation, real PostgreSQL 18.4 production-build integration, and unified verification.
+- Gate 4.1 Stages 4–6 passed TimeBlock, Capture/Proposal/Apply, and durable Outbox/BullMQ/SSE/TanStack/Offline foundations.
+- Gate 4.1 Stage 7 passed immutable Plan/Review snapshots, traceable deterministic Plan-vs-Actual, zero-fabricated actual timing, actor-scoped Today/Review, bounded `/app/today` and `/app/review` UI, production HTTP integration, two clean rebuilds, and unified verification.
+- Gate 4.1 Stage 8 passed production Chromium E2E, actor isolation, responsive Light/Dark visual baselines, keyboard/reduced-motion accessibility, real IndexedDB reload/offline/Auth Epoch safety, and unified verification.
+- Gate 4.1 Stage 9 local final audit passed clean-room frozen installation, deterministic migration generation, two clean rebuilds, unified verification, production Chromium verification, publication-set safety review, and Handoff integrity checks. Commit, push, and hosted exact-commit CI require separate publication authorization. Gate 4.2 has not started.
 - Completed evidence: Stage 0 environment/dependency review, Stage 1 repository governance, Stage 2 workspace layering/import-boundary enforcement, Stage 3 Web/Worker runtime shells, Stage 4 Contracts/UI foundation, Stage 5 Data/Queue foundation, Stage 6 Unified Verification/CI, and Stage 7 Browser/Visual Evidence.
-- Stage 3 passed frozen installation, production build, Web HTTP smoke, Worker runtime smoke, and unified verification.
-- Web and Worker contain runtime shells only. No authentication, Task, Calendar, Inbox, Proposal, AI, Connector, business database schema, or real queue workflow exists yet.
+- Gate 4.1 uses deterministic Review only. Real AI, Connectors, Knowledge, Scene Packs, WebGL, and full product navigation remain out of scope.
 - Stage 4 passed deterministic Contracts generation/drift detection, Light/Dark semantic tokens, minimal UI components, Web integration, and unified verification.
 - Stage 5 passed PostgreSQL 18.4 clean rebuild, deterministic Drizzle migration, Redis 8.2.8 health, BullMQ pure-JavaScript fake-job smoke, boundary enforcement, and unified verification.
 - Stage 6 passed public-repository publication safety, fresh frozen install, the shared `pnpm verify` entry point, and GitHub Actions run `31553121149` on exact commit `964a965dfd6b6161c3a55f30fc557b255a68fea1` using `ubuntu-24.04`.
 - Stage 7 passed the eight-state Light/Dark desktop/mobile browser matrix, responsive and semantic checks, real keyboard Enter activation, deterministic evidence hashing, frozen installation, and unified verification.
 - Stage 8 Phase A local final audit passed and final publication was explicitly authorized. Gate 4.0 closes only when `origin/main` and a successful GitHub Hosted Runner `head_sha` equal the exact final Gate commit.
-- Gate 4.1 has not started.
 
 ## Prerequisites
 
@@ -55,6 +61,7 @@ pnpm db:smoke
 pnpm db:rebuild:smoke
 pnpm queue:smoke
 pnpm infra:smoke
+pnpm stage3:http:smoke
 pnpm web:build
 pnpm web:smoke
 pnpm worker:build
@@ -64,7 +71,7 @@ pnpm build
 pnpm verify
 ```
 
-The Stage 2 package boundaries remain enforced. Stage 5 evidence is recorded in `docs/codex/GATE_4_0_STAGE_5_DATA_QUEUE.md`. Stage 6 local evidence and the CI publication checkpoint are recorded in `docs/codex/GATE_4_0_STAGE_6_CI.md`. Stage 7 browser evidence is recorded in `docs/codex/GATE_4_0_STAGE_7_BROWSER_EVIDENCE.md`. The Stage 8 local final audit and publication checkpoint are recorded in `docs/codex/GATE_4_0_FINAL_REPORT.md`.
+The package boundaries remain enforced. Gate 4.1 Stage 7 evidence is recorded in `docs/codex/GATE_4_1_STAGE_7_REVIEW_PRODUCT_UI.md`. Browser/visual/accessibility/IndexedDB proof remains explicitly deferred to Gate 4.1 Stage 8.
 
 ## Intended Architecture
 

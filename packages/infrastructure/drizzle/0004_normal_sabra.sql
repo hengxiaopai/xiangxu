@@ -1,0 +1,2 @@
+ALTER TABLE "infra"."outbox_events" DROP CONSTRAINT "outbox_events_topic";--> statement-breakpoint
+ALTER TABLE "infra"."outbox_events" ADD CONSTRAINT "outbox_events_topic" CHECK ("infra"."outbox_events"."topic" IN ('object.changed', 'proposal.ready', 'capture.triage.requested'));

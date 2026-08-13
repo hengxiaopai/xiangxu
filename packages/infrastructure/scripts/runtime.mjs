@@ -36,12 +36,16 @@ export async function createRunContext() {
   const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "xiangxu-stage5-"));
   const password = `stage5-${randomUUID()}`;
   const envFile = path.join(temporaryRoot, "compose.env");
+  const requestedRedisPort = process.env.XIANGXU_STAGE5_REDIS_TEST_PORT ?? "6379";
+  if (!(requestedRedisPort === "6379" || requestedRedisPort === "56379")) {
+    throw new Error("XIANGXU_STAGE5_REDIS_TEST_PORT must be 6379 or the reviewed local fallback 56379");
+  }
   const values = {
     XIANGXU_STAGE5_POSTGRES_DB: "xiangxu_stage5",
     XIANGXU_STAGE5_POSTGRES_PASSWORD: password,
     XIANGXU_STAGE5_POSTGRES_PORT: "55432",
     XIANGXU_STAGE5_POSTGRES_USER: "xiangxu_stage5",
-    XIANGXU_STAGE5_REDIS_PORT: "6379",
+    XIANGXU_STAGE5_REDIS_PORT: requestedRedisPort,
   };
   await writeFile(
     envFile,
@@ -51,7 +55,7 @@ export async function createRunContext() {
     { encoding: "utf8", mode: 0o600 },
   );
   const databaseUrl = `postgresql://${values.XIANGXU_STAGE5_POSTGRES_USER}:${password}@127.0.0.1:55432/${values.XIANGXU_STAGE5_POSTGRES_DB}`;
-  const redisUrl = "redis://127.0.0.1:6379/0";
+  const redisUrl = `redis://127.0.0.1:${requestedRedisPort}/0`;
   const config = readInfrastructureConfig({ DATABASE_URL: databaseUrl, REDIS_URL: redisUrl });
   assertStage5LocalConfig(config);
   return { ...config, envFile, temporaryRoot };

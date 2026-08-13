@@ -1,5 +1,7 @@
 import { migrateDatabase, smokeDatabase, waitForStableDatabase } from "./database.mjs";
 import { smokeQueue } from "./queue.mjs";
+import { runDatabaseIntegrationTests } from "./integration.mjs";
+import { runStage3HttpIntegration } from "./http-integration.mjs";
 import {
   collectContainerEvidence,
   composeDownWithVolumes,
@@ -18,6 +20,8 @@ try {
   await waitForStableDatabase(context.databaseUrl);
   await migrateDatabase(context.databaseUrl);
   await migrateDatabase(context.databaseUrl);
+  runDatabaseIntegrationTests(context.databaseUrl, context.redisUrl);
+  await runStage3HttpIntegration(context.databaseUrl);
   const database = await smokeDatabase(context.databaseUrl);
   const queue = await smokeQueue(context.redisUrl);
   console.log(JSON.stringify({ containers, database, queue }));

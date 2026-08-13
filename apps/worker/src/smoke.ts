@@ -6,6 +6,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { runFakeJob } from "./fake-job.js";
+import { ProposalGenerationProcessor } from "./proposal-processor.js";
 
 async function availablePort(): Promise<number> {
   const server = createServer();
@@ -57,6 +58,23 @@ async function main() {
   try {
     assert.deepEqual(await waitForHealth(origin), { status: "ok" });
     assert.deepEqual(runFakeJob("stage-3-smoke"), { smokeId: "stage-3-smoke", status: "completed" });
+    const proposalIntent = {
+      outboxEventId: "0198f1a0-1000-7000-8000-000000000001",
+      outboxSequence: "9007199254740993",
+      commandId: "0198f1a0-1000-7000-8000-000000000001",
+      captureId: "0198f1a0-1000-7000-8000-000000000002",
+      correlationId: "0198f1a0-1000-7000-8000-000000000003",
+    };
+    let applicationIntent: unknown;
+    const proposalResult = await new ProposalGenerationProcessor({
+      generate: async (intent) => {
+        applicationIntent = intent;
+        return { status: 202, proposalId: "0198f1a0-1000-7000-8000-000000000004" };
+      },
+    }).process(proposalIntent);
+    assert.deepEqual(applicationIntent, proposalIntent);
+    assert.deepEqual(proposalResult, { status: 202, proposalId: "0198f1a0-1000-7000-8000-000000000004" });
+    assert.equal("rawText" in proposalIntent, false);
     await new Promise<void>((resolve, reject) => {
       child.send("SIGTERM", (error) => (error ? reject(error) : resolve()));
     });
@@ -66,7 +84,7 @@ async function main() {
     ]);
     assert.equal(result.code, 0, output);
     assert.match(output, /WORKER_SHUTDOWN SIGTERM/);
-    console.log(`Worker smoke PASS — health 200; fake job completed; graceful shutdown exit ${result.code}.`);
+    console.log(`Worker smoke PASS — health 200; fake job and Proposal Application processor completed; graceful shutdown exit ${result.code}.`);
   } finally {
     if (child.exitCode === null && child.signalCode === null) child.kill("SIGKILL");
   }

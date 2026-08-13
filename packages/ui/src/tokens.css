@@ -1,4 +1,7 @@
 /* Primitive tokens: the only approved raw design values. */
+@custom-media --xx-viewport-tablet (max-width: 1024px);
+@custom-media --xx-viewport-mobile (max-width: 768px);
+
 :root {
   --xx-primitive-paper-50: #fafaf7;
   --xx-primitive-paper-0: #ffffff;
@@ -91,6 +94,10 @@
   --xx-color-ai-surface: var(--xx-primitive-ice-100);
   --xx-color-ai-border: var(--xx-primitive-ice-200);
   --xx-color-ai-text: var(--xx-primitive-ice-700);
+  --xx-color-status-success: var(--xx-primitive-success-600);
+  --xx-color-status-warning: var(--xx-color-text-secondary);
+  --xx-color-status-danger: var(--xx-primitive-danger-600);
+  --xx-color-status-info: var(--xx-color-brand-primary);
   --xx-color-focus: var(--xx-color-brand-primary);
 }
 
@@ -100,11 +107,16 @@
   --xx-color-bg-surface: var(--xx-primitive-dark-surface);
   --xx-color-bg-subtle: var(--xx-primitive-dark-surface);
   --xx-color-text-primary: var(--xx-primitive-dark-text-primary);
-  --xx-color-text-secondary: var(--xx-primitive-dark-text-secondary);
-  --xx-color-text-tertiary: var(--xx-primitive-dark-text-secondary);
+  --xx-color-text-secondary: var(--xx-primitive-ice-200);
+  --xx-color-text-tertiary: var(--xx-primitive-ice-200);
   --xx-color-border: var(--xx-primitive-dark-border);
   --xx-color-border-strong: var(--xx-primitive-dark-text-secondary);
   --xx-color-ai-surface: var(--xx-primitive-dark-ai-surface);
+  --xx-color-ai-text: var(--xx-primitive-ice-200);
+  --xx-color-status-success: var(--xx-primitive-success-600);
+  --xx-color-status-warning: var(--xx-primitive-sand-500);
+  --xx-color-status-danger: var(--xx-primitive-danger-600);
+  --xx-color-status-info: var(--xx-primitive-ice-200);
   --xx-color-focus: var(--xx-color-ai-border);
 }
 

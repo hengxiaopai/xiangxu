@@ -45,7 +45,7 @@ export function assertStage5LocalConfig(config) {
     databasePort !== EXPECTED.databasePort ||
     databaseName !== EXPECTED.databaseName ||
     redis.hostname !== EXPECTED.redisHost ||
-    redisPort !== EXPECTED.redisPort
+    !(redisPort === EXPECTED.redisPort || redisPort === "56379")
   ) {
     throw new Error("Refusing operation outside the fixed XIANGXU Stage 5 local infrastructure identity");
   }

@@ -12,7 +12,7 @@
     "generate": "pnpm build && node scripts/generate-openapi.mjs",
     "check": "pnpm build && node scripts/check-openapi.mjs",
     "drift:test": "pnpm build && node scripts/test-drift.mjs",
-    "test": "node dist/smoke.js && node scripts/test-drift.mjs"
+    "test": "vitest run && node dist/smoke.js && node scripts/test-drift.mjs"
   },
   "dependencies": {
     "zod": "4.4.3"

@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 
-import "@xiangxu/ui";
 import "./shell.css";
+import "@xiangxu/ui";
 
 export const metadata = {
-  title: "XIANGXU Runtime Shell",
-  description: "Gate 4.0 Stage 3 runtime shell only.",
+  title: "向序 XIANGXU",
+  description: "可验证的 Daily Loop：计划、执行与复盘。",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

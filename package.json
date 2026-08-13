@@ -26,20 +26,26 @@
     "tokens:check": "node tools/tokens/check-tokens.mjs",
     "browser:check": "node tools/browser/check-keyboard-evidence.mjs",
     "browser:evidence": "node tools/browser/check-evidence.mjs",
+    "browser:a11y:check": "node tools/browser/check-stage8-a11y.mjs",
+    "browser:verify": "node tools/browser/run-stage8.mjs",
+    "browser:verify:update": "node tools/browser/run-stage8.mjs --update-snapshots",
     "ci:check": "node tools/ci/test-workflow.mjs",
     "db:generate": "pnpm --filter @xiangxu/infrastructure db:generate",
     "db:migrate": "pnpm --filter @xiangxu/infrastructure db:migrate",
     "db:smoke": "pnpm --filter @xiangxu/infrastructure db:smoke",
-    "db:rebuild:smoke": "pnpm --filter @xiangxu/infrastructure db:rebuild:smoke",
+    "db:rebuild:smoke": "pnpm worker:build && pnpm --filter @xiangxu/infrastructure db:rebuild:smoke",
     "queue:smoke": "pnpm --filter @xiangxu/infrastructure queue:smoke",
     "infra:smoke": "pnpm --filter @xiangxu/infrastructure infra:smoke",
+    "stage3:http:smoke": "pnpm --filter @xiangxu/infrastructure test:http",
     "verify": "pnpm ci:check && pnpm lint && pnpm typecheck && pnpm boundary && pnpm boundary:test && pnpm contracts:check && pnpm tokens:check && pnpm test && pnpm build && pnpm infra:smoke"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.62.0",
     "eslint": "10.8.1",
     "turbo": "2.10.9",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.67.0"
+    "typescript-eslint": "8.67.0",
+    "vitest": "4.1.10"
   }
 }

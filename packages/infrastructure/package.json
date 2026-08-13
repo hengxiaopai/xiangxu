@@ -14,15 +14,20 @@
     "infra:smoke": "node scripts/infra-smoke.mjs --confirm-xiangxu-stage5",
     "queue:smoke": "node scripts/queue-smoke.mjs",
     "test": "node scripts/config-smoke.mjs",
+    "test:integration": "vitest run src/postgres/postgres.integration.test.ts src/postgres/time-block.integration.test.ts src/postgres/capture-proposal.integration.test.ts src/postgres/stage6-async.integration.test.ts src/postgres/stage7-daily-loop.integration.test.ts",
+    "test:http": "node scripts/stage3-http-smoke.mjs --confirm-xiangxu-stage5",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@xiangxu/application": "workspace:*",
+    "@xiangxu/domain": "workspace:*",
     "bullmq": "6.0.10",
     "drizzle-orm": "0.45.2",
     "ioredis": "5.11.1",
     "pg": "8.23.0"
   },
   "devDependencies": {
+    "@types/pg": "8.20.0",
     "drizzle-kit": "0.31.10"
   }
 }

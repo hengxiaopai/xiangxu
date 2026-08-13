@@ -2,16 +2,26 @@
 
 ## Current Gate
 
-- Current gate: **Gate 4.0 — engineering bootstrap only**.
-- Current completed stage: **Stage 7 — Browser & Visual Evidence**.
+- Current gate: **Gate 4.1 — Daily Loop Vertical Slice**.
+- Current completed implementation stage: **Stage 8 — Production Chromium E2E + Responsive + A11y + Visual + IndexedDB Proof**.
+- Stage 9 local final audit passed on 2026-08-13. Publication remains pending a separate explicit human authorization; no commit, push, or hosted exact-commit CI closure has been performed.
+- Stage 3 passed production-profile fail-closed Dev Session, secure hash-only session persistence, server Actor resolution, actor isolation, transactional Create/Complete with PostgreSQL CAS/ChangeRecord/Outbox/Idempotency, real production-build HTTP integration, and unified verification on 2026-08-13.
+- Stage 0 passed exact dependency/native/lifecycle review, observable pnpm resolver recovery, Chromium-only Playwright dry-run provenance, deterministic frozen installation, native tooling smoke, revision/HTTP ADR, path-aware Web composition boundary fixtures, and unified verification on 2026-08-12.
+- Stage 1 passed pure Domain values/invariants, Application command/query intents, transport DTOs, RFC 9457, ETag/If-Match, typed Proposal, versioned SSE, deterministic OpenAPI, boundary enforcement, and unified verification on 2026-08-12.
+- Stage 2 passed additive migration 0001, two-cycle fresh PostgreSQL 18.4 replay, Task repository/CAS, PgUnitOfWork, append-only ChangeRecord, transactional Outbox, durable Idempotency, session hash persistence, boundary enforcement, and unified verification on 2026-08-12.
+- Stage 4 passed the Recovery-scoped Create/Move-only contract, additive migration 0002, owner-scoped PostgreSQL advisory locking, half-open overlap enforcement, TimeBlock CAS/ChangeRecord/Outbox/Idempotency, actor isolation, locked actor policy, two-cycle PostgreSQL 18.4 rebuild, real production-build HTTP integration, and unified verification on 2026-08-13. No direct TimeBlock GET was added.
+- Gate 4.1 Stage 5 passed the Frozen Contract and typed-patch audit, additive migration 0003, immutable text RawPayload, deterministic structured `task.create` Proposal, Worker-to-Application execution, explicit transactional Apply, stale/concurrency/actor isolation, two-cycle PostgreSQL 18.4 rebuild, real production-build HTTP integration, and unified verification on 2026-08-13. No provider SDK, auto-Apply, direct Worker database access, Proposal GET, Capture GET, dispatcher, SSE, TanStack, offline storage, or Stage 6 implementation was added.
+- Gate 4.1 Stage 6 passed Human Recovery ADR-G4.1-002, constraint-only migration 0004, atomic `capture.triage.requested`, concurrent/recoverable Outbox dispatch, deterministic BullMQ-to-Stage-5-Worker/Application execution, actor-scoped PostgreSQL SSE replay, exact TanStack invalidation, native IndexedDB Offline Capture foundation, two-cycle PostgreSQL 18.4 rebuild, real production-build streaming HTTP integration, and unified verification on 2026-08-13.
+- Gate 4.1 Stage 7 passed frozen Plan/Review Contract audit, additive migration 0005, immutable Plan/Review snapshots, safe daily version allocation, zero-fabricated ExecutionRecord semantics, traceable deterministic Review, actor-scoped Today/Review/SSE, bounded token-first `/app/today` and `/app/review` UI, two-cycle PostgreSQL 18.4 rebuild, real production-build HTTP integration, and unified verification on 2026-08-13.
+- Gate 4.1 Stage 8 passed real production-stack bundled-Chromium verification, actor-isolated authentication/SSE/TanStack behavior, real IndexedDB reload/offline/Auth Epoch safety, two independent reviewed visual-baseline runs, responsive Light/Dark and keyboard/reduced-motion accessibility audits, frozen artifact checks, and unified verification on 2026-08-13.
+- Gate 4.1 Stage 9 local audit passed clean-room frozen installation, deterministic migration generation, two-cycle PostgreSQL rebuild, unified verification, production Chromium verification, publication-set safety review, and Handoff integrity checks on 2026-08-13. Stage 9 is not formally closed until separately authorized publication and exact-commit hosted CI succeed.
+- Gate 4.2 has not started.
 - Stage 5 passed PostgreSQL 18.4 clean rebuild, deterministic Drizzle migration, Redis 8.2.8 health, BullMQ pure-JavaScript fake-job smoke, boundary enforcement, and unified verification on 2026-08-12.
-- Stage 5 lifecycle policy allows three exact esbuild versions and explicitly denies exact `msgpackr-extract@3.0.4`; every other lifecycle/build script remains denied.
+- Lifecycle policy allows exact `esbuild@0.18.20`, `esbuild@0.25.12`, and `esbuild@0.28.2`; explicitly denies exact `msgpackr-extract@3.0.4` and `fsevents@2.3.2`; every other lifecycle/build script remains denied.
 - Stage 6 passed publication safety, SHA-pinned GitHub Actions policy, fresh frozen installation, unified verification, infrastructure cleanup, and a real `ubuntu-24.04` hosted run for exact commit `964a965dfd6b6161c3a55f30fc557b255a68fea1` on 2026-08-12.
 - Stage 7 passed the eight-state Light/Dark desktop/mobile screenshot matrix, responsive geometry and semantic checks, real Chrome Tab/Shift+Tab/Enter activation, deterministic artifact hashing, frozen installation, and unified verification on 2026-08-12.
 - Stage 8 Phase A local final audit passed on 2026-08-12, and final publication was explicitly authorized on 2026-08-12.
-- Current Stage 8 status remains **BLOCKED — final publication and exact-commit hosted CI closure pending** until `origin/main` and the successful Actions `head_sha` both equal the final Gate commit.
-- Only the reviewed Stage 7/8 evidence set may be committed and normally pushed to `origin/main`; force push, tags, releases, product work, and Gate 4.1 remain unauthorized.
-- Never start Gate 4.1 without an explicit human PASS.
+- Gate 4.0 final publication and exact-commit hosted CI closure passed for commit `a3183a026fea893b66c7b72dd65ce0f15d7fa572`.
 - Work only inside the Stage named by the active task.
 
 ## Source of Truth
@@ -62,14 +72,17 @@ domain <- application <- infrastructure <- apps
 
 Stage 2 enforces these rules through `tools/boundary/boundary-matrix.json`, manifest/source checks, and positive/negative fixtures. Later Stages may expand only their explicitly approved edges.
 
-## Stage Ownership
+## Gate 4.1 Stage Ownership
 
-- Stage 1: repository governance and toolchain foundation.
-- Stage 2: workspace package layering and boundary enforcement.
-- Stage 3: Web and Worker shells.
-- Stage 4: Contracts and UI foundation.
-- Stage 5: PostgreSQL, Drizzle, Redis, and BullMQ infrastructure smoke.
-- Stages 6–8: unified verification, browser evidence, and Gate report.
+- Stage 1: Contracts + Pure Domain.
+- Stage 2: reviewed DB migration + infrastructure foundation.
+- Stage 3: dev session + Create/Complete Task.
+- Stage 4: TimeBlock.
+- Stage 5: Capture + Proposal + Apply.
+- Stage 6: Outbox + Worker + SSE + TanStack + Offline Capture.
+- Stage 7: Plan / Execution / Review + bounded UI.
+- Stage 8: full E2E / visual / accessibility / recovery.
+- Stage 9: final Gate audit/publication checkpoint.
 
 Do not create later-Stage implementation to make the current Stage look complete.
 

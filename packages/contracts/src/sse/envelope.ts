@@ -1,22 +1,49 @@
 import { z } from "zod";
 
 import { contractMetadataSchema } from "../schema/contract-metadata.js";
+import {
+  affectedRefsAndProjectionHintsSchema,
+  projectionHintSchema,
+  revisionDecimalSchema,
+  uuidV7Schema,
+} from "../schema/primitives.js";
 
-const sseDataSchema = z
+const eventIdSchema = z.string().min(1).regex(/^[A-Za-z0-9._:-]+$/);
+const envelope = <TEvent extends string, TData extends z.ZodType>(event: TEvent, data: TData) =>
+  z.object({ event: z.literal(event), id: eventIdSchema, data, version: z.literal("1") }).strict();
+
+const objectChangedDataSchema = affectedRefsAndProjectionHintsSchema.extend({
+  revision: revisionDecimalSchema,
+  changedFieldFamilies: z.array(z.string().min(1)),
+});
+const proposalReadyDataSchema = affectedRefsAndProjectionHintsSchema.extend({
+  proposalId: uuidV7Schema,
+  capability: z.string().min(1),
+  surfaceHint: z.string().min(1),
+  riskLevel: z.enum(["low", "medium", "high"]),
+});
+const jobProgressDataSchema = affectedRefsAndProjectionHintsSchema.extend({
+  jobId: uuidV7Schema,
+  jobClass: z.string().min(1),
+  progress: z.number().min(0).max(1),
+  status: z.enum(["queued", "running", "succeeded", "failed", "cancelled"]),
+});
+const resyncRequiredDataSchema = z
   .object({
-    version: z.literal("1"),
-    data: contractMetadataSchema,
+    affectedRefs: z.array(z.never()).max(0),
+    projectionHints: z.array(projectionHintSchema),
+    reason: z.literal("retention_gap"),
+    latestEventId: eventIdSchema.optional(),
   })
   .strict();
 
-export const sseEnvelopeSchema = z
-  .object({
-    event: z.literal("system.contract-metadata"),
-    id: z.string().min(1).regex(/^[A-Za-z0-9._:-]+$/),
-    data: contractMetadataSchema,
-    version: z.literal("1"),
-  })
-  .strict();
+export const sseEnvelopeSchema = z.discriminatedUnion("event", [
+  envelope("system.contract-metadata", contractMetadataSchema),
+  envelope("object.changed", objectChangedDataSchema),
+  envelope("proposal.ready", proposalReadyDataSchema),
+  envelope("job.progress", jobProgressDataSchema),
+  envelope("system.resync-required", resyncRequiredDataSchema),
+]);
 
 export type SseEnvelope = z.infer<typeof sseEnvelopeSchema>;
 
@@ -35,7 +62,7 @@ export function decodeSseEnvelope(wire: string): SseEnvelope {
     fields.set(line.slice(0, separator), line.slice(separator + 1).trimStart());
   }
 
-  const payload = sseDataSchema.parse(JSON.parse(fields.get("data") ?? ""));
+  const payload = z.object({ version: z.literal("1"), data: z.unknown() }).strict().parse(JSON.parse(fields.get("data") ?? ""));
   return sseEnvelopeSchema.parse({
     event: fields.get("event"),
     id: fields.get("id"),

@@ -19,10 +19,36 @@
             "type": "object",
             "additionalProperties": { "enum": ["runtime", "type-only"] }
           },
+          "sourceScopedWorkspaceDependencies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["target", "permission", "include"],
+              "properties": {
+                "target": { "type": "string" },
+                "permission": { "enum": ["runtime", "type-only"] },
+                "include": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+                "forbidClientReachability": { "type": "boolean" }
+              },
+              "additionalProperties": false
+            }
+          },
           "allowedExternalDependencies": {
             "type": "array",
             "items": { "type": "string" },
             "uniqueItems": true
+          },
+          "sourceScopedExternalDependencies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["specifier", "include"],
+              "properties": {
+                "specifier": { "type": "string" },
+                "include": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+              },
+              "additionalProperties": false
+            }
           },
           "additionalSourceInputs": {
             "type": "array",

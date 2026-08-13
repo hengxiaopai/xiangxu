@@ -35,12 +35,14 @@ if (negative.status !== 1 || negative.report.ok) {
 
 const expectedCodes = new Set([
   "cross-package-relative-import",
+  "client-reaches-server-composition",
   "deep-import",
   "forbidden-workspace-dependency",
   "external-dependency-not-allowed",
   "external-import-not-allowed",
   "production-depends-on-testing",
   "runtime-import-on-type-only-edge",
+  "source-scoped-workspace-import",
   "undeclared-workspace-import",
   "workspace-cycle",
 ]);
@@ -59,6 +61,17 @@ for (const [source, target] of expectedEdges) {
     (violation) => violation.code === "forbidden-workspace-dependency" && violation.package === source && violation.target === target,
   );
   if (!found) throw new Error(`Negative fixture did not reject ${source} -> ${target}`);
+}
+
+for (const [code, fileFragment] of [
+  ["source-scoped-workspace-import", "apps/web/src/server/other.ts"],
+  ["client-reaches-server-composition", "apps/web/src/client-entry.ts"],
+  ["deep-import", "apps/web/src/server/composition/deep.ts"],
+]) {
+  const found = negative.report.violations.some(
+    (violation) => violation.code === code && violation.file?.replaceAll("\\", "/").includes(fileFragment),
+  );
+  if (!found) throw new Error(`Negative fixture did not prove ${code} for ${fileFragment}`);
 }
 
 for (const source of ["@xiangxu/domain", "@xiangxu/ui"]) {
@@ -91,5 +104,14 @@ for (const [source, target] of [
   );
   if (!found) throw new Error(`Negative fixture did not reject ${source} -> ${target}`);
 }
+
+const nonTestVitest = negative.report.violations.some(
+  (violation) =>
+    violation.code === "external-import-not-allowed" &&
+    violation.package === "@xiangxu/domain" &&
+    violation.specifier === "vitest" &&
+    violation.file?.replaceAll("\\", "/").includes("packages/domain/src/test-helper.ts"),
+);
+if (!nonTestVitest) throw new Error("Negative fixture did not reject Vitest outside an approved *.test.ts source scope");
 
 console.log(`Boundary self-test PASS — positive exit ${positive.status}; negative exit ${negative.status}; ${negative.report.violations.length} expected violation records.`);
